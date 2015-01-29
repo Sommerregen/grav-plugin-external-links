@@ -1,0 +1,16 @@
+a.external.no-img, a.external.icon {
+  background: url(../images/link.png) right center no-repeat;
+  padding-right: 12px;
+}
+a.mailto.no-img, a.mailto.icon {
+  background: url(../images/mail.png) right center no-repeat;
+  padding-right: 12px;
+}
+
+/* Hide the extra spans when printing. */
+@media print {
+  a.extternal, a.mailto {
+    display: none;
+    padding: 0;
+  }
+}

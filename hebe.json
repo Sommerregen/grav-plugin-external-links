@@ -1,0 +1,15 @@
+{
+   "project":"grav-plugin-external-links",
+   "platforms":{
+      "grav":{
+         "nodes":{
+            "plugin":[
+               {
+                  "source":"/",
+                  "destination":"/user/plugins/external_links"
+               }
+            ]
+         }
+      }
+   }
+}

@@ -1,0 +1,17 @@
+# Global plugin configurations
+
+enabled: true                 # Set to false to disable this plugin completely
+built_in_css: true            # Use built-in CSS of the plugin
+weight: 0                     # Set the weight (order of executing)
+
+exclude:
+  classes: exclude            # Exclude all links with this class
+  domains:                    # A list of domains to be excluded e.g
+  # - localhost/*             # (any RegExp can be used)
+  # - img.domain.com/*
+
+# Global and page specific configurations
+
+process: true                 # Filter external links
+no_follow: true               # Add rel="nofollow" to all external links
+target: _blank                # Set target attribute of link
