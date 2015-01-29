@@ -61,10 +61,10 @@ to switch off `External Links` plugin just for this page.
 
 Something you might want to do is to override the look and feel of the external links, and with Grav it is super easy.
 
-Copy the stylesheet [css/external_Links.css](css/external_Links.css) into the `css` folder of your custom theme, and add it to the list of CSS files.
+Copy the stylesheet [css/external_links.css](css/external_links.css) into the `css` folder of your custom theme, and add it to the list of CSS files.
 
 ```
-/your/site/grav/user/themes/custom-theme/css/external_Links.css
+/your/site/grav/user/themes/custom-theme/css/external_links.css
 ```
 
 After that set the `built_in_css` option of the `External Links` plugin to `false`. That's it.
