@@ -1,6 +1,6 @@
 <?php
 /**
- * External Links v1.0.0
+ * External Links v1.0.1
  *
  * This plugin adds small icons to external and mailto links, informing
  * users the link will take them to a new site or open their email client.
@@ -8,7 +8,7 @@
  * Licensed under MIT, see LICENSE.
  *
  * @package     External Links
- * @version     1.0.0
+ * @version     1.0.1
  * @link        <https://github.com/sommerregen/grav-plugin-archive-plus>
  * @author      Benjamin Regler <sommergen@benjamin-regler.de>
  * @copyright   2015, Benjamin Regler
@@ -83,7 +83,6 @@ class ExternalLinksPlugin extends Plugin {
     /** @var Page $page */
     $page = $event['page'];
     $config = $this->mergeConfig($page);
-    $this->grav['debugger']->addMessage($config);
 
     // Modify page content only once
     $process = $config->get('external_links.process', FALSE);
@@ -267,7 +266,7 @@ class ExternalLinksPlugin extends Plugin {
     // Create new config data class
     $config = new Data();
     $config->setDefaults($header);
-    $config->join($className, $plugin);
+    $config->joinDefaults($className, $plugin);
 
     // Return configurations as a new data config class
     return $config;
