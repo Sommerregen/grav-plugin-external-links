@@ -1,16 +1,16 @@
-a.external.no-img, a.external.icon {
+a.external.no-image, a.external.icon {
   background: url(../images/link.png) right center no-repeat;
   padding-right: 12px;
 }
-a.mailto.no-img, a.mailto.icon {
+a.mailto.no-image, a.mailto.icon {
   background: url(../images/mail.png) right center no-repeat;
   padding-right: 12px;
 }
 
-/* Hide the extra spans when printing. */
+/* Hide link or mailto icons when printing. */
 @media print {
-  a.extternal, a.mailto {
-    display: none;
+  a.external, a.mailto {
+    background-image: none;
     padding: 0;
   }
 }

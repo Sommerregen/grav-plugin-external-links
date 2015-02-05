@@ -21,8 +21,6 @@ use Grav\Common\Grav;
 use Grav\Common\Utils;
 use Grav\Common\Plugin;
 use Grav\Common\Page\Page;
-use Grav\Common\Data\Data;
-use Grav\Common\Inflector;
 use RocketTheme\Toolbox\Event\Event;
 
 /**
@@ -64,8 +62,9 @@ class ExternalLinksPlugin extends Plugin {
 
     if ( $this->config->get('plugins.external_links.enabled') ) {
       $weight = $this->config->get('plugins.external_links.weight');
+      // Process contents order according to weight option
+
       $this->enable([
-        // Process contents order according to weight option
         'onPageContentProcessed' => ['onPageContentProcessed', $weight],
         'onTwigSiteVariables' => ['onTwigSiteVariables', 0],
       ]);
@@ -73,7 +72,7 @@ class ExternalLinksPlugin extends Plugin {
   }
 
   /**
-   * Apply drop caps filter to content, when each page has not been
+   * Apply external links filter to content, when each page has not been
    * cached yet.
    *
    * @param  Event  $event The event when 'onPageContentProcessed' was
@@ -84,9 +83,8 @@ class ExternalLinksPlugin extends Plugin {
     $page = $event['page'];
     $config = $this->mergeConfig($page);
 
-    // Modify page content only once
-    $process = $config->get('external_links.process', FALSE);
-    if ( $config->get('process.external_links', $process) AND $this->compileOnce($page) ) {
+    // Modify page content
+    if ( $config->get('process', TRUE) ) {
       $content = $page->getRawContent();
 
       // Create a DOM parser object
@@ -109,7 +107,7 @@ class ExternalLinksPlugin extends Plugin {
 
       $links = $dom->getElementsByTagName('a');
       foreach ( $links as $a ) {
-        // Process link with href attribute only, if it is non-empty
+        // Process links with non-empty href attribute only
         $href = $a->getAttribute('href');
         if ( strlen($href) == 0 ) {
           continue;
@@ -119,7 +117,7 @@ class ExternalLinksPlugin extends Plugin {
         $class = $a->hasAttribute('class') ? $a->getAttribute('class') : '';
         $classes = array_filter(explode(' ', $class));
 
-        $exclude = $config->get('external_links.exclude.classes');
+        $exclude = $config->get('exclude.classes');
         if ( $exclude AND in_array($exclude, $classes) ) {
           continue;
         }
@@ -135,13 +133,13 @@ class ExternalLinksPlugin extends Plugin {
           $classes[] = 'external';
 
           // Add target="_blank"
-          $target = $config->get('external_links.target');
+          $target = $config->get('target');
           if ( $target ) {
             $a->setAttribute('target', $target);
           }
 
           // Add no-follow.
-          $nofollow = $config->get('external_links.no_follow');
+          $nofollow = $config->get('no_follow');
           if ( $nofollow ) {
             $rel = array_filter(explode(' ', $a->getAttribute('rel')));
             if ( !in_array('nofollow', $rel) ) {
@@ -150,16 +148,18 @@ class ExternalLinksPlugin extends Plugin {
             }
           }
 
-          // Add title (aka alert_text)
-          //$title = $this->config->get('plugins.external_links.title');
-          //$a-setAttribute('title', $title);
+          // Add title (aka alert text) e.g.
+          //    This link will take you to an external web site.
+          //    We are not responsible for their content.
+          // $title = $this->config->get('plugins.external_links.title');
+          // $a->setAttribute('data-title', $title);
         }
 
-        // Add image class to <a> if it one <img> child element exists
+        // Add image class to <a> if it has at least one <img> child element
         $imgs = $a->getElementsByTagName('img');
         if ( $imgs->length > 1 ) {
-          // Add "imgs" class to <a> element, if it has multiple child images
-          $classes[] = 'imgs';
+          // Add "images" class to <a> element, if it has multiple child images
+          $classes[] = 'images';
         } elseif ( $imgs->length == 1 ) {
           $imgNode = $imgs->item(0);
 
@@ -170,10 +170,10 @@ class ExternalLinksPlugin extends Plugin {
           $size = max($width, $height);
 
           // Depending on size determine image type
-          $classes[] = ( (0 < $size) AND ($size <= 32) ) ? 'icon' : 'img';
+          $classes[] = ( (0 < $size) AND ($size <= 32) ) ? 'icon' : 'image';
         } else {
-          // Add "no-img" class to <a> element, if it has no child images
-          $classes[] = 'no-img';
+          // Add "no-image" class to <a> element, if it has no child images
+          $classes[] = 'no-image';
         }
 
         // Set class attribute
@@ -184,7 +184,8 @@ class ExternalLinksPlugin extends Plugin {
 
       $content = '';
       // Process HTML from DOM document
-      foreach ( $dom->documentElement->childNodes as $node ) {
+      $body = $dom->getElementsByTagName('body')->item(0);
+      foreach ( $body->childNodes as $node ) {
         $content .= $dom->saveHTML($node);
       }
 
@@ -196,7 +197,7 @@ class ExternalLinksPlugin extends Plugin {
    * Set needed variables to display drop caps.
    */
   public function onTwigSiteVariables() {
-    if ($this->config->get('plugins.external_links.built_in_css')) {
+    if ( $this->config->get('plugins.external_links.built_in_css') ) {
       $this->grav['assets']->add('plugin://external_links/css/external_links.css');
     }
   }
@@ -205,72 +206,6 @@ class ExternalLinksPlugin extends Plugin {
    * Private/protected helper methods
    * --------------------------------
    */
-
-  /**
-   * Checks if a page has already been compiled yet.
-   *
-   * @param  Page    $page The page to check
-   * @return boolean       Returns TRUE if page has already been
-   *                       compiled yet, FALSE otherwise
-   */
-  protected function compileOnce(Page $page) {
-    static $processed = array();
-
-    $id = md5($page->path());
-    // Make sure that contents is only processed once
-    if ( !isset($processed[$id]) OR ($processed[$id] < $page->modified()) ) {
-      $processed[$id] = $page->modified();
-      return TRUE;
-    }
-
-    return FALSE;
-  }
-
-  /**
-   * Merge global and page configurations.
-   *
-   * @param  Page   $page The page to merge the configurations with the
-   *                      plugin settings.
-   */
-  protected function mergeConfig(Page $page) {
-    static $className;
-
-    if ( is_null($className) ) {
-      // Load configuration based on class name
-      $reflector = new \ReflectionClass($this);
-
-      // Remove namespace and trailing "Plugin" word
-      $name = $reflector->getShortName();
-      $name = substr($name, 0, -strlen('Plugin'));
-
-      // Guess configuration path from class name
-      $class_formats = array(
-        strtolower($name),                # all lowercased
-        Inflector::underscorize($name),   # underscored
-        );
-
-      $defaults = array();
-      // Try to load configuration
-      foreach ( $class_formats as $name ) {
-        if ( !is_null($this->config->get('plugins.' . $name, NULL)) ) {
-          $className = $name;
-          break;
-        }
-      }
-    }
-
-    // Get default plugin configurations and retrieve page header configuration
-    $plugin = (array) $this->config->get('plugins.' . $className, array());
-    $header = (array) $page->header();
-
-    // Create new config data class
-    $config = new Data();
-    $config->setDefaults($header);
-    $config->joinDefaults($className, $plugin);
-
-    // Return configurations as a new data config class
-    return $config;
-  }
 
   /**
    * Test if a URL is external
@@ -329,12 +264,29 @@ class ExternalLinksPlugin extends Plugin {
    * Determine the size of an image
    *
    * @param  DOMNode $imgNode The image already parsed as a DOMNode
+   * @param  integer $limit   Load first $limit KB of remote image
    * @return array            Return the dimension of the image of the
    *                          format array(width, height)
    */
-  protected function getImageSize($imgNode) {
+  protected function getImageSize($imgNode, $limit = 32) {
     // Hold units (assume standard font with 16px base pixel size)
-    $units = array('px' => 1, 'pt' => 12, 'ex' => 6, 'em' => 12, 'rem' => 12);
+    // Calculations based on pixels
+    $units = array(
+      'px' => 1,            /* base unit: pixel */
+      'pt' => 16 / 12,      /* 12 point = 16 pixel = 1/72 inch */
+      'pc' => 16,           /* 1 pica = 16 pixel = 12 points */
+
+      'in' => 96,           /* 1 inch = 96 pixel = 2.54 centimeters */
+      'mm' => 96 / 25.4,    /* 1 millimeter = 96 pixel / 1 inch [mm] */
+      'cm' => 96 / 2.54,    /* 1 centimeter = 96 pixel / 1 inch [cm] */
+      'm' => 96 / 0.0254,   /* 1 centimeter = 96 pixel / 1 inch [m] */
+
+      'ex' => 7,            /* 1 ex = 7 pixel */
+      'em' => 16,           /* 1 em = 16 pixel */
+      'rem' => 16,          /* 1 ex = 16 pixel */
+
+      '%' => 16 / 100,      /* 100 percent = 16 pixel */
+    );
 
     // Initialize dimensions
     $width = 0;
@@ -349,8 +301,8 @@ class ExternalLinksPlugin extends Plugin {
       if ( realpath($path) AND is_file($path) ) {
         $size = @getimagesize($path);
       } else {
-        // The URL is external; try to load it (max. 32 KB)
-        $size = $this->getRemoteImageSize($src, 32 * 1024);
+        // The URL is external; try to load it (default: 32 KB)
+        $size = $this->getRemoteImageSize($src, $limit * 1024);
       }
     }
 
@@ -395,13 +347,12 @@ class ExternalLinksPlugin extends Plugin {
    * Get the size of a remote image
    *
    * @param  string  $uri   The URI of the remote image
-   * @param  integer $bytes Limit size for remote image; download only
-   *                        up to n bytes.
+   * @param  integer $limit Load first $limit bytes of remote image
    * @return mixed          Returns an array with up to 7 elements
    */
-  protected function getRemoteImageSize($uri, $bytes = -1) {
+  protected function getRemoteImageSize($uri, $limit = -1) {
     // Create temporary file to store data from $uri
-    $tmp_name = tempnam(sys_get_temp_dir(), uniqid('gis'));
+    $tmp_name = tempnam(sys_get_temp_dir(), uniqid('ris'));
     if ( $tmp_name === FALSE ) {
       return FALSE;
     }
@@ -416,9 +367,9 @@ class ExternalLinksPlugin extends Plugin {
     // Use stream copy
     if ( $allow_url_fopen ) {
       $options = array();
-      if ( $bytes > 0 ) {
-        // Loading number of $bytes
-        $options['http']['header'] = array('Range: bytes=0-' . $bytes);
+      if ( $limit > 0 ) {
+        // Loading number of $limit bytes
+        $options['http']['header'] = array('Range: bytes=0-' . $limit);
       }
 
       // Create stream context
@@ -431,7 +382,7 @@ class ExternalLinksPlugin extends Plugin {
       $options = array(
         CURLOPT_HEADER => FALSE,            // Don't return headers
         CURLOPT_FOLLOWLOCATION => TRUE,     // Follow redirects
-        CURLOPT_AUTOREFERER => TRUE,        // Set referer on redirect
+        CURLOPT_AUTOREFERER => TRUE,        // Set referrer on redirect
         CURLOPT_CONNECTTIMEOUT => 120,      // Timeout on connect
         CURLOPT_TIMEOUT => 120,             // Timeout on response
         CURLOPT_MAXREDIRS => 10,            // Stop after 10 redirects
@@ -444,20 +395,20 @@ class ExternalLinksPlugin extends Plugin {
       $curl = curl_init();
       curl_setopt_array($curl, $options);
 
-      if ( $bytes > 0 ) {
-        // Loading number of $bytes
-        $headers = array('Range: bytes=0-' . $bytes);
+      if ( $limit > 0 ) {
+        // Loading number of $limit
+        $headers = array('Range: bytes=0-' . $limit);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($curl, CURLOPT_RANGE, '0-' . $bytes);
+        curl_setopt($curl, CURLOPT_RANGE, '0-' . $limit);
 
         // Abort request when more data is received
         curl_setopt($curl, CURLOPT_BUFFERSIZE, 512);    // More progress info
         curl_setopt($curl, CURLOPT_NOPROGRESS, FALSE);  // Monitor progress
         curl_setopt($curl, CURLOPT_PROGRESSFUNCTION,
-          function($download_size, $downloaded, $upload_size, $uploaded) use ($bytes) {
-            // If $downloaded exceeds $bytes, returning non-0 breaks
+          function($download_size, $downloaded, $upload_size, $uploaded) use ($limit) {
+            // If $downloaded exceeds $limit, returning non-zero breaks
             // the connection!
-            return ( $downloaded > $bytes ) ? 1 : 0;
+            return ( $downloaded > $limit ) ? 1 : 0;
         });
       }
 

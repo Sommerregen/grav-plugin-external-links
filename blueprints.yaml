@@ -38,10 +38,10 @@ form:
 
     weight:
       type: text
-      label: Set the weight (order of executing)
+      label: Set the weight (order of execution)
       default: 0
       validate:
-        type: number
+        type: int
         min: -100
         max: 100
 
