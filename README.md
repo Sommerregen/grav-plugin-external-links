@@ -4,19 +4,19 @@
 
 ## About
 
-`External Links` is a plugin for [GetGrav.org](http://getgrav.org) tused to differentiate between internal and external links. It also includes the ability of adding "rel=nofollow" to links as well and how external links shall be opened via "target" attribute. [Wikipedia](https://www.wikipedia.org/) is a well-known example.
+`External Links` is a plugin for [GetGrav.org](http://getgrav.org) used to differentiate between internal and external links. It also includes the ability of adding "rel=nofollow" to links as well and how external links shall be opened via "target" attribute. [Wikipedia](https://www.wikipedia.org/) is a well-known example.
 
 Furthermore this plugin enables you to specify multiple domains, each of them on a new line to prevent them from being seen as external sites.
 
 If you are interested in seeing this plugin in action, here is a screenshot:
 
-![Screenshot External Links Plugin](assets/readme.png "External Links Preview")
+![Screenshot External Links Plugin](assets/screenshot.png "External Links Preview")
 
 ## Installation and Updates
 
 Installing or updating the `External Links` plugin can be done in one of two ways. Using the GPM (Grav Package Manager) installation method or manual install or update method by downloading [this plugin](https://github.com/sommerregen/grav-plugin-external-links) and extracting all plugin files to
 
-    /your/site/grav/user/plugins/external_Links
+	/your/site/grav/user/plugins/external_links
 
 For more informations, please check the [Installation and update guide](INSTALL.md).
 
@@ -31,7 +31,9 @@ The `External Links` plugin comes with some sensible default configuration, that
 
 enabled: true                 # Set to false to disable this plugin completely
 built_in_css: true            # Use built-in CSS of the plugin
-weight: 0                     # Set the weight (order of executing)
+weight: 0                     # Set the weight (order of execution)
+
+# Default options for External Links configuration.
 
 exclude:
   classes: exclude            # Exclude all links with this class
@@ -73,10 +75,10 @@ You can now edit, override and tweak it however you prefer. However, this plugin
 
 - `external` -- Used to identify external links.
 - `mailto` -- Used to identify mailto links.
-- `no-img` -- Set if a link does not contain any image tags.
+- `no-image` -- Set if a link does not contain any image tags.
 - `icon`-- Set if a link contains an image (with size <= 32px).
-- `img` -- Set if a link contains an image (with size > 32px).
-- `imgs` -- Set if a link contains more than one image.
+- `image` -- Set if a link contains an image (with size > 32px).
+- `images` -- Set if a link contains more than one image.
 
 ## Contributing
 
@@ -90,7 +92,7 @@ After that please note:
 
 ### Support and donations
 
-If you like my project, feel free to support me, since donations will keep this project alive. You can [![Flattr me](https://api.flattr.com/button/flattr-badge-large.png)][flattr] or send me some bitcoins to **1HQdy5aBzNKNvqspiLvcmzigCq7doGfLM4** whenever you want.
+If you like my project, feel free to support me via [![Flattr](https://api.flattr.com/button/flattr-badge-large.png)][flattr] or by sending me some bitcoins to **1HQdy5aBzNKNvqspiLvcmzigCq7doGfLM4**.
 
 Thanks!
 
