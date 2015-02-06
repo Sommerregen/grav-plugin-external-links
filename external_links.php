@@ -1,6 +1,6 @@
 <?php
 /**
- * External Links v1.1.0
+ * External Links v1.1.1
  *
  * This plugin adds small icons to external and mailto links, informing
  * users the link will take them to a new site or open their email client.
@@ -8,7 +8,7 @@
  * Licensed under MIT, see LICENSE.
  *
  * @package     External Links
- * @version     1.1.0
+ * @version     1.1.1
  * @link        <https://github.com/sommerregen/grav-plugin-archive-plus>
  * @author      Benjamin Regler <sommergen@benjamin-regler.de>
  * @copyright   2015, Benjamin Regler
@@ -101,7 +101,7 @@ class ExternalLinksPlugin extends Plugin {
 
       // Do nothing, if DOM is empty or a route for a given page
       // does not exist
-      if ( is_null($dom->documentElement) OR !$page->routable() ) {
+      if ( is_null($dom->documentElement) OR !$page->route() ) {
         return;
       }
 
@@ -148,32 +148,32 @@ class ExternalLinksPlugin extends Plugin {
             }
           }
 
+          // Add image class to <a> if it has at least one <img> child element
+          $imgs = $a->getElementsByTagName('img');
+          if ( $imgs->length > 1 ) {
+            // Add "images" class to <a> element, if it has multiple child images
+            $classes[] = 'images';
+          } elseif ( $imgs->length == 1 ) {
+            $imgNode = $imgs->item(0);
+
+            // Get image size
+            list($width, $height) = $this->getImageSize($imgNode);
+
+            // Determine maximum dimension of image size
+            $size = max($width, $height);
+
+            // Depending on size determine image type
+            $classes[] = ( (0 < $size) AND ($size <= 32) ) ? 'icon' : 'image';
+          } else {
+            // Add "no-image" class to <a> element, if it has no child images
+            $classes[] = 'no-image';
+          }
+
           // Add title (aka alert text) e.g.
           //    This link will take you to an external web site.
           //    We are not responsible for their content.
           // $title = $this->config->get('plugins.external_links.title');
           // $a->setAttribute('data-title', $title);
-        }
-
-        // Add image class to <a> if it has at least one <img> child element
-        $imgs = $a->getElementsByTagName('img');
-        if ( $imgs->length > 1 ) {
-          // Add "images" class to <a> element, if it has multiple child images
-          $classes[] = 'images';
-        } elseif ( $imgs->length == 1 ) {
-          $imgNode = $imgs->item(0);
-
-          // Get image size
-          list($width, $height) = $this->getImageSize($imgNode);
-
-          // Determine maximum dimension of image size
-          $size = max($width, $height);
-
-          // Depending on size determine image type
-          $classes[] = ( (0 < $size) AND ($size <= 32) ) ? 'icon' : 'image';
-        } else {
-          // Add "no-image" class to <a> element, if it has no child images
-          $classes[] = 'no-image';
         }
 
         // Set class attribute
@@ -235,7 +235,7 @@ class ExternalLinksPlugin extends Plugin {
       foreach ( $urls as $domain ) {
         $domains[] = preg_quote($domain, '#');
       }
-      $pattern = '#^(' . str_replace('\*', '.*', implode('|', $domains)) . ')#';
+      $pattern = '#(' . str_replace(array('\*', '/*'), '.*?', implode('|', $domains)) . ')#i';
     }
 
     $external = FALSE;

@@ -1,8 +1,8 @@
-a.external.no-image, a.external.icon {
+a.external.icon, a.external.no-image, a[href^="http://"].external, a[href^="https://"].external {
   background: url(../images/link.png) right center no-repeat;
   padding-right: 12px;
 }
-a.mailto.no-image, a.mailto.icon {
+a.mailto.icon, a.mailto.no-image {
   background: url(../images/mail.png) right center no-repeat;
   padding-right: 12px;
 }

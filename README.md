@@ -59,6 +59,28 @@ external_links:
 
 to switch off `External Links` plugin just for this page.
 
+### Example
+
+By default `External Links` adds small icons to external or mailto links, opening their links in a new tab, e.g. in your Markdown file
+
+```
+[Link text](http://domain.com)
+```
+
+will be recognized as an external link (an icon on the right is showing up), whereas
+
+```
+[My arcticle](my-article)
+```
+
+is not. If you don't want that a specific domain should be considered as external, then either add it to the `exlcude.domains` option or add a class (default: `exclude`) to the link
+
+```
+[Domain without external link icon](http://my-specific-domain.com) {.exclude}
+```
+
+(Markdown Extra should be enabled in your `user/config/systems.yaml` via `pages.markdown.extra: true`).
+
 ### CSS Stylesheet Override
 
 Something you might want to do is to override the look and feel of the external links, and with Grav it is super easy.
