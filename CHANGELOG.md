@@ -1,3 +1,15 @@
+# v1.1.1
+## 02/06/2015
+
+1. [](#new)
+  * Added usage example in README.md
+  * Add favicons next to external links via CSS when using class `external` only
+2. [](#improved)
+  * Added support for HHVM **(requires Grav >= 0.9.17)**
+  * Added modular pages support
+3. [](#bugfix)
+  * Fixed regular expression in `isExternalUrl($url)` method
+
 # v1.1.0
 ## 02/05/2015
 
