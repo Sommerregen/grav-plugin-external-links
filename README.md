@@ -50,7 +50,7 @@ target: _blank                # Set target attribute of link
 
 If you need to change any value, then the best process is to copy the [external_links.yaml](external_links.yaml) file into your `users/config/plugins/` folder (create it if it doesn't exist), and then modify there. This will override the default settings.
 
-If you want to alter the settings for one or only few pages, you can do so by adding page specific configurations into your page headers, e.g.
+If you want to alter the settings for one or a few pages only, you can do so by adding page specific configurations into your page headers, e.g.
 
 ```
 external_links:
@@ -61,25 +61,35 @@ to switch off `External Links` plugin just for this page.
 
 ### Example
 
-By default `External Links` adds small icons to external or mailto links, opening their links in a new tab, e.g. in your Markdown file
+By default `External Links` adds a small icon to external or mailto links and opens by default links in a new tab. Any links in your Markdown file i.e. of the form
 
 ```
-[Link text](http://domain.com)
+[External Link text](http://domain.com)
+
+or
+
+[External Link text](https://domain.com)
 ```
 
-will be recognized as an external link (an icon on the right is showing up), whereas
+will then be recognized as an external link (an icon on the right is showing up), whereas
 
 ```
 [My arcticle](my-article)
 ```
 
-is not. If you don't want that a specific domain should be considered as external, then either add it to the `exlcude.domains` option or add a class (default: `exclude`) to the link
+will not. You can exclude specific domains not to be seen as external either by adding them to the `exlcude.domains` option or by adding a class (default: `exclude`) to the desired links as in the following:
 
 ```
 [Domain without external link icon](http://my-specific-domain.com) {.exclude}
 ```
 
-(Markdown Extra should be enabled in your `user/config/systems.yaml` via `pages.markdown.extra: true`).
+> Please note that **Markdown Extra** should be enabled in your `user/config/systems.yaml` via `pages.markdown.extra: true` in order to add classes to these links.
+
+Sometimes you maybe wish to explicitly set a link to be "external". Although this should happen in really rare cases, since `External links` plugin will automatically detect external links, it is possible. Provided that **Markdown Extra** is enabled, adding the class `external` to the link will do the trick:
+
+```
+[Always show external link icon](my-external-article) {.external}
+```
 
 ### CSS Stylesheet Override
 
@@ -95,7 +105,7 @@ After that set the `built_in_css` option of the `External Links` plugin to `fals
 
 You can now edit, override and tweak it however you prefer. However, this plugin adds extra classes for styling to every link, you might wanna know:
 
-- `external` -- Used to identify external links.
+- `external`, `external-link` -- Used to identify external links.
 - `mailto` -- Used to identify mailto links.
 - `no-image` -- Set if a link does not contain any image tags.
 - `icon`-- Set if a link contains an image (with size <= 32px).

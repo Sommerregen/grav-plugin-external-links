@@ -1,6 +1,6 @@
 <?php
 /**
- * External Links v1.1.1
+ * External Links v1.1.2
  *
  * This plugin adds small icons to external and mailto links, informing
  * users the link will take them to a new site or open their email client.
@@ -8,7 +8,7 @@
  * Licensed under MIT, see LICENSE.
  *
  * @package     External Links
- * @version     1.1.1
+ * @version     1.1.2
  * @link        <https://github.com/sommerregen/grav-plugin-archive-plus>
  * @author      Benjamin Regler <sommergen@benjamin-regler.de>
  * @copyright   2015, Benjamin Regler
@@ -130,7 +130,7 @@ class ExternalLinksPlugin extends Plugin {
         // The link is external
         elseif ( $this->isExternalUrl($href) ) {
           // Add external class
-          $classes[] = 'external';
+          $classes[] = 'external-link';
 
           // Add target="_blank"
           $target = $config->get('target');
@@ -186,15 +186,18 @@ class ExternalLinksPlugin extends Plugin {
       // Process HTML from DOM document
       $body = $dom->getElementsByTagName('body')->item(0);
       foreach ( $body->childNodes as $node ) {
-        $content .= $dom->saveHTML($node);
+        $content .= $dom->saveXML($node);
       }
+
+      // Fix formatting for self-closing tags in HTML5
+      $content = preg_replace('~<(area|base(?:font)?|br|col|command|embed|frame|hr|img|input|keygen|link|meta|param|source|track|wbr)(.*?)\s*/>~i', '<$1$2 />', $content);
 
       $page->setRawcontent($content);
     }
   }
 
   /**
-   * Set needed variables to display drop caps.
+   * Set needed variables to display external links.
    */
   public function onTwigSiteVariables() {
     if ( $this->config->get('plugins.external_links.built_in_css') ) {
