@@ -1,11 +1,21 @@
+# v1.1.2
+## 02/10/2015
+
+1. [](#new)
+  * By default `External Links` now uses the class `external-links` for CSS styling; using `external` is still possible e.g. for manually markup external links
+2. [](#improved)
+  * Improved usage example in README.md
+3. [](#bugfix)
+  * Fixed issue with LightSlider plugin
+
 # v1.1.1
 ## 02/06/2015
 
 1. [](#new)
   * Added usage example in README.md
-  * Add favicons next to external links via CSS when using class `external` only
+  * Add icons next to external links via CSS when using class `external` only
 2. [](#improved)
-  * Added support for HHVM **(requires Grav >= 0.9.17)**
+  * Added support for HHVM **(requires Grav 0.9.17+)**
   * Added modular pages support
 3. [](#bugfix)
   * Fixed regular expression in `isExternalUrl($url)` method
