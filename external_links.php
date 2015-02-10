@@ -186,15 +186,18 @@ class ExternalLinksPlugin extends Plugin {
       // Process HTML from DOM document
       $body = $dom->getElementsByTagName('body')->item(0);
       foreach ( $body->childNodes as $node ) {
-        $content .= $dom->saveHTML($node);
+        $content .= $dom->saveXML($node);
       }
+
+      // Fix formatting for self-closing tags in HTML5
+      $content = preg_replace('~<(area|base(?:font)?|br|col|command|embed|frame|hr|img|input|keygen|link|meta|param|source|track|wbr)(.*?)\s*/>~i', '<$1$2 />', $content);
 
       $page->setRawcontent($content);
     }
   }
 
   /**
-   * Set needed variables to display drop caps.
+   * Set needed variables to display external links.
    */
   public function onTwigSiteVariables() {
     if ( $this->config->get('plugins.external_links.built_in_css') ) {
