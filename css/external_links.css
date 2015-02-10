@@ -1,4 +1,4 @@
-a.external.icon, a.external.no-image, a[href^="http://"].external, a[href^="https://"].external {
+a.external-link.icon, a.external-link.no-image, a.external, a.external {
   background: url(../images/link.png) right center no-repeat;
   padding-right: 12px;
 }
@@ -9,7 +9,7 @@ a.mailto.icon, a.mailto.no-image {
 
 /* Hide link or mailto icons when printing. */
 @media print {
-  a.external, a.mailto {
+  a.external, a.external-link, a.mailto {
     background-image: none;
     padding: 0;
   }

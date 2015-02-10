@@ -130,7 +130,7 @@ class ExternalLinksPlugin extends Plugin {
         // The link is external
         elseif ( $this->isExternalUrl($href) ) {
           // Add external class
-          $classes[] = 'external';
+          $classes[] = 'external-link';
 
           // Add target="_blank"
           $target = $config->get('target');
