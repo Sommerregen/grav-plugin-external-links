@@ -1,3 +1,9 @@
+# v1.1.3
+## 02/10/2015
+
+3. [](#bugfix)
+  * Fixed self-closing tags in HTML5 and ensured to return contents compliant to HTML(5)
+
 # v1.1.2
 ## 02/10/2015
 
