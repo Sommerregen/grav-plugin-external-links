@@ -2,7 +2,7 @@ a.external-link.icon, a.external-link.no-image, a.external, a.external {
   background: url(../images/link.png) right center no-repeat;
   padding-right: 12px;
 }
-a.mailto.icon, a.mailto.no-image {
+a.mailto {
   background: url(../images/mail.png) right center no-repeat;
   padding-right: 12px;
 }

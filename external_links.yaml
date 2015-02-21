@@ -7,7 +7,7 @@ weight: 0                     # Set the weight (order of execution)
 # Default options for External Links configuration.
 
 exclude:
-  classes: exclude            # Exclude all links with this class
+  classes: [exclude]          # Exclude all links with this class
   domains:                    # A list of domains to be excluded e.g
   # - localhost/*             # (any RegExp can be used)
   # - img.domain.com/*
@@ -16,4 +16,7 @@ exclude:
 
 process: true                 # Filter external links
 no_follow: true               # Add rel="nofollow" to all external links
-target: _blank                # Set target attribute of link
+target: "_blank"              # Set target attribute of link
+
+mode: "active"                # active = process and parse all links;
+                              # passive = parse links, but don't set CSS classes

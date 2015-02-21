@@ -1,3 +1,16 @@
+# v1.2.0
+## 02/21/2015
+
+1. [](#new)
+  * Added option `mode` to parse links passively (where no CSS classes are set) and actively
+2. [](#improved)
+  * Allow multiple classes to exclude in option `exclude.classes`
+  * Improved process engine to ensure not to alter HTML tags or HTML entities in content
+  * Refactored code
+3. [](#bugfix)
+  * Fixed self-closing tags in HTML5 and ensured to return contents compliant to HTML(5)
+  * Fixed LightSlider issue
+
 # v1.1.3
 ## 02/10/2015
 
