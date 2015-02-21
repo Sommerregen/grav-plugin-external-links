@@ -6,7 +6,7 @@ author:
   name: Sommerregen
   email: sommerregen@benjamin-regler.de
 homepage: https://github.com/sommerregen/grav-plugin-external-links
-keywords: external, links, filter, formatter, plugin
+keywords: [external, links, filter, formatter, plugin]
 docs: https://github.com/sommerregen/grav-plugin-external-links/blob/master/README.md
 bugs: https://github.com/sommerregen/grav-plugin-external-links/issues
 license: MIT
