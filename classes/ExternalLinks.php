@@ -124,7 +124,7 @@ class ExternalLinks {
         }
 
         // Set class attribute
-        if ( count($classes) AND ($options->get('exclude.mode') === 'active') ) {
+        if ( count($classes) AND ($options->get('mode') === 'active') ) {
           $a->setAttribute('class', implode(' ', $classes));
         }
 

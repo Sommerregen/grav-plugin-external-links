@@ -1,3 +1,9 @@
+# v1.2.1
+## 03/24/2015
+
+3. [](#bugfix)
+  * Fixed active `mode` condition
+
 # v1.2.0
 ## 02/21/2015
 

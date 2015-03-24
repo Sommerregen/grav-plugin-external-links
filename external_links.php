@@ -1,6 +1,6 @@
 <?php
 /**
- * External Links v1.2.0
+ * External Links v1.2.1
  *
  * This plugin adds small icons to external and mailto links, informing
  * users the link will take them to a new site or open their email client.
@@ -8,7 +8,7 @@
  * Licensed under MIT, see LICENSE.
  *
  * @package     External Links
- * @version     1.2.0
+ * @version     1.2.1
  * @link        <https://github.com/sommerregen/grav-plugin-external-links>
  * @author      Benjamin Regler <sommerregen@benjamin-regler.de>
  * @copyright   2015, Benjamin Regler
