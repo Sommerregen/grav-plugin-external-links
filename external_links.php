@@ -1,6 +1,6 @@
 <?php
 /**
- * External Links v1.2.1
+ * External Links v1.2.2
  *
  * This plugin adds small icons to external and mailto links, informing
  * users the link will take them to a new site or open their email client.
@@ -8,7 +8,7 @@
  * Licensed under MIT, see LICENSE.
  *
  * @package     External Links
- * @version     1.2.1
+ * @version     1.2.2
  * @link        <https://github.com/sommerregen/grav-plugin-external-links>
  * @author      Benjamin Regler <sommerregen@benjamin-regler.de>
  * @copyright   2015, Benjamin Regler
@@ -28,7 +28,8 @@ use RocketTheme\Toolbox\Event\Event;
  * This plugin adds small icons to external and mailto links, informing
  * users the link will take them to a new site or open their email client.
  */
-class ExternalLinksPlugin extends Plugin {
+class ExternalLinksPlugin extends Plugin
+{
   /**
    * @var ExternaLinksPlugin
    */
@@ -51,7 +52,8 @@ class ExternalLinksPlugin extends Plugin {
    * @return array    The list of events of the plugin of the form
    *                      'name' => ['method_name', priority].
    */
-  public static function getSubscribedEvents() {
+  public static function getSubscribedEvents()
+  {
     return [
       'onPluginsInitialized' => ['onPluginsInitialized', 0],
     ];
@@ -60,13 +62,14 @@ class ExternalLinksPlugin extends Plugin {
   /**
    * Initialize configuration.
    */
-  public function onPluginsInitialized() {
+  public function onPluginsInitialized()
+  {
     if ($this->isAdmin()) {
       $this->active = false;
       return;
     }
 
-    if ( $this->config->get('plugins.external_links.enabled') ) {
+    if ($this->config->get('plugins.external_links.enabled')) {
       // Initialize ExternalLinks class
       require_once(__DIR__ . '/classes/ExternalLinks.php');
       $this->external_links = new ExternalLinks();
@@ -88,20 +91,21 @@ class ExternalLinksPlugin extends Plugin {
    * @param  Event  $event The event when 'onPageContentProcessed' was
    *                       fired.
    */
-  public function onPageContentProcessed(Event $event) {
+  public function onPageContentProcessed(Event $event)
+  {
     /** @var Page $page */
     $page = $event['page'];
 
     $config = $this->mergeConfig($page);
-    if ( $config->get('process', FALSE) AND $this->compileOnce($page) ) {
+    if ($config->get('process', false) && $this->compileOnce($page)) {
       // Do nothing, if a route for a given page does not exist
-      if ( !$page->route() ) {
+      if (!$page->route()) {
         return;
       }
 
       // Check if mode option is valid
       $mode = $config->get('mode', 'passive');
-      if ( !in_array($mode, array('active', 'passive')) ) {
+      if (!in_array($mode, array('active', 'passive'))) {
         return;
       }
 
@@ -118,7 +122,8 @@ class ExternalLinksPlugin extends Plugin {
   /**
    * Set needed variables to display external links.
    */
-  public function onTwigSiteVariables() {
+  public function onTwigSiteVariables()
+  {
     if ( $this->config->get('plugins.external_links.built_in_css') ) {
       $this->grav['assets']->add('plugin://external_links/assets/css/external_links.css');
     }
@@ -133,19 +138,20 @@ class ExternalLinksPlugin extends Plugin {
    * Checks if a page has already been compiled yet.
    *
    * @param  Page    $page The page to check
-   * @return boolean       Returns TRUE if page has already been
-   *                       compiled yet, FALSE otherwise
+   * @return boolean       Returns true if page has already been
+   *                       compiled yet, false otherwise
    */
-  protected function compileOnce(Page $page) {
-    static $processed = array();
+  protected function compileOnce(Page $page)
+  {
+    static $processed = [];
 
     $id = md5($page->path());
     // Make sure that contents is only processed once
-    if ( !isset($processed[$id]) OR ($processed[$id] < $page->modified()) ) {
+    if (!isset($processed[$id]) || ($processed[$id] < $page->modified())) {
       $processed[$id] = $page->modified();
-      return TRUE;
+      return true;
     }
 
-    return FALSE;
+    return false;
   }
 }

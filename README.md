@@ -4,9 +4,9 @@
 
 ## About
 
-`External Links` is a plugin for [GetGrav.org](http://getgrav.org) used to differentiate between internal and external links. It also includes the ability of adding "rel=nofollow" to links as well and how external links shall be opened via "target" attribute. [Wikipedia](https://www.wikipedia.org/) is a well-known example.
+`External Links` is a plugin for [GetGrav.org](http://getgrav.org) used to differentiate between internal and external links. It also includes the ability of adding "rel=nofollow" to links as and determines how external links shall be opened via the "target" attribute. [Wikipedia](https://www.wikipedia.org/) is a well-known example.
 
-Furthermore this plugin enables you to specify multiple domains, each of them on a new line to prevent them from being seen as external sites.
+Furthermore it enables you to specify multiple domains, each of them on a new line to prevent them from being seen as external sites.
 
 If you are interested in seeing this plugin in action, here is a screenshot:
 
@@ -98,7 +98,7 @@ Sometimes you maybe wish to explicitly set a link to be "external". Although thi
 
 Something you might want to do is to override the look and feel of the external links, and with Grav it is super easy.
 
-Copy the stylesheet [css/external_links.css](css/external_links.css) into the `css` folder of your custom theme, and add it to the list of CSS files.
+Copy the stylesheet [assets/css/external_links.css](assets/css/external_links.css) into the `css` folder of your custom theme, and add it to the list of CSS files.
 
 ```
 /your/site/grav/user/themes/custom-theme/css/external_links.css

@@ -20,7 +20,8 @@ use Grav\Common\GravTrait;
  * Helper class to add small icons to external and mailto links, informing
  * users the link will take them to a new site or open their email client.
  */
-class ExternalLinks {
+class ExternalLinks
+{
   /**
    * @var ExternalLinks
    */
@@ -39,12 +40,13 @@ class ExternalLinks {
    *
    * @return string          The processed content
    */
-	public function process($content, $options = array()) {
+	public function process($content, $options = [])
+  {
     // Get all <a> tags and process them
     $content = preg_replace_callback('~<a[^>]*>.*?</a>~i',
       function($match) use ($options) {
         // Load PHP built-in DOMDocument class
-        if ( ($dom = $this->loadDOMDocument($match[0])) === NULL ) {
+        if (($dom = $this->loadDOMDocument($match[0])) === null) {
           return $match[0];
         }
 
@@ -52,7 +54,7 @@ class ExternalLinks {
 
         // Process links with non-empty href attribute
         $href = $a->getAttribute('href');
-        if ( strlen($href) == 0 ) {
+        if (strlen($href) == 0) {
           return $match[0];
         }
 
@@ -61,35 +63,35 @@ class ExternalLinks {
         $classes = array_filter(explode(' ', $class));
 
         // Exclude links with specific class from processing
-        $exclude = $options->get('exclude.classes', NULL);
-        if ( $exclude AND !!array_intersect($exclude, $classes) ) {
+        $exclude = $options->get('exclude.classes', null);
+        if ($exclude && !!array_intersect($exclude, $classes)) {
           return $match[0];
         }
 
         // Get domains to be seen as internal
-        $domains = $options->get('exclude.domains', array());
+        $domains = $options->get('exclude.domains', []);
 
         // This is a mailto link.
-        if ( strpos($href, 'mailto:') === 0 ) {
+        if (strpos($href, 'mailto:') === 0) {
           $classes[] = 'mailto';
         }
 
         // The link is external
-        elseif ( $this->isExternalUrl($href, $domains) ) {
+        elseif ($this->isExternalUrl($href, $domains)) {
           // Add external class
           $classes[] = 'external-link';
 
           // Add target="_blank"
           $target = $options->get('target');
-          if ( $target ) {
+          if ($target) {
             $a->setAttribute('target', $target);
           }
 
           // Add no-follow.
           $nofollow = $options->get('no_follow');
-          if ( $nofollow ) {
+          if ($nofollow) {
             $rel = array_filter(explode(' ', $a->getAttribute('rel')));
-            if ( !in_array('nofollow', $rel) ) {
+            if (!in_array('nofollow', $rel)) {
               $rel[] = 'nofollow';
               $a->setAttribute('rel', implode(' ', $rel));
             }
@@ -97,10 +99,10 @@ class ExternalLinks {
 
           // Add image class to <a> if it has at least one <img> child element
           $imgs = $a->getElementsByTagName('img');
-          if ( $imgs->length > 1 ) {
+          if ($imgs->length > 1) {
             // Add "images" class to <a> element, if it has multiple child images
             $classes[] = 'images';
-          } elseif ( $imgs->length == 1 ) {
+          } elseif ($imgs->length == 1) {
             $imgNode = $imgs->item(0);
 
             // Get image size
@@ -110,7 +112,7 @@ class ExternalLinks {
             $size = max($width, $height);
 
             // Depending on size determine image type
-            $classes[] = ( (0 < $size) AND ($size <= 32) ) ? 'icon' : 'image';
+            $classes[] = ((0 < $size) && ($size <= 32)) ? 'icon' : 'image';
           } else {
             // Add "no-image" class to <a> element, if it has no child images
             $classes[] = 'no-image';
@@ -124,7 +126,7 @@ class ExternalLinks {
         }
 
         // Set class attribute
-        if ( count($classes) AND ($options->get('mode') === 'active') ) {
+        if (count($classes) && ($options->get('mode') === 'active')) {
           $a->setAttribute('class', implode(' ', $classes));
         }
 
@@ -148,15 +150,16 @@ class ExternalLinks {
    * @param  string  $url     The URL to test.
    * @param  array   $domains An array of domains to be seen as internal.
    *
-   * @return boolean          Returns TRUE, if the URL is external,
-   *                          FALSE otherwise.
+   * @return boolean          Returns true, if the URL is external,
+   *                          false otherwise.
    */
-  protected function isExternalUrl($url, $domains = array()) {
+  protected function isExternalUrl($url, $domains = [])
+  {
     static $allowed_protocols;
     static $pattern;
 
     // Statically store allowed protocols
-    if ( !isset($allowed_protocols) ) {
+    if (!isset($allowed_protocols)) {
       $allowed_protocols = array_flip(array(
         'ftp', 'http', 'https', 'irc', 'mailto', 'news', 'nntp',
         'rtsp', 'sftp', 'ssh', 'tel', 'telnet', 'webcal')
@@ -164,7 +167,7 @@ class ExternalLinks {
     }
 
     // Statically store internal domains as a PCRE pattern.
-    if ( !isset($pattern) OR (count($domains) > 0)) {
+    if (!isset($pattern) || (count($domains) > 0)) {
       $domains = array_merge($domains,
         array(self::getGrav()['base_url_absolute']));
 
@@ -175,26 +178,26 @@ class ExternalLinks {
         implode('|', $domains)) . ')#i';
     }
 
-    $external = FALSE;
+    $external = false;
     if ( !preg_match($pattern, $url) ) {
       // Check if URL is external by extracting colon position
       $colonpos = strpos($url, ':');
-      if ( $colonpos > 0 ) {
+      if ($colonpos > 0) {
         // We found a colon, possibly a protocol. Verify.
         $protocol = strtolower(substr($url, 0, $colonpos));
         if ( isset($allowed_protocols[$protocol]) ) {
           // The protocol turns out be an allowed protocol
-          $external = TRUE;
+          $external = true;
         }
-      } elseif ( Utils::startsWith($url, 'www.') ) {
+      } elseif (Utils::startsWith($url, 'www.')) {
         // We found an url without protocol, but with starting
         // 'www' (sub-)domain
-        $external = TRUE;
+        $external = true;
       }
     }
 
-    // Only if a colon and a valid protocol was found return TRUE
-    return ($colonpos !== FALSE) AND $external;
+    // Only if a colon and a valid protocol was found return true
+    return ($colonpos !== false) && $external;
   }
 
   /**
@@ -206,7 +209,8 @@ class ExternalLinks {
    * @return array            Return the dimension of the image of the
    *                          format array(width, height)
    */
-  protected function getImageSize($imgNode, $limit = 32) {
+  protected function getImageSize($imgNode, $limit = 32)
+  {
     // Hold units (assume standard font with 16px base pixel size)
     // Calculations based on pixels
     $units = array(
@@ -231,12 +235,12 @@ class ExternalLinks {
     $height = 0;
 
     // Determine image dimensions based on "src" atrribute
-    if ( $imgNode->hasAttribute('src') ) {
+    if ($imgNode->hasAttribute('src')) {
       $src = $imgNode->getAttribute('src');
 
       // Simple check if the URL is internal i.e. check if path exists
       $path = $_SERVER['DOCUMENT_ROOT'] . $src;
-      if ( realpath($path) AND is_file($path) ) {
+      if (realpath($path) && is_file($path)) {
         $size = @getimagesize($path);
       } else {
         // The URL is external; try to load it (default: 32 KB)
@@ -255,7 +259,7 @@ class ExternalLinks {
       $style = $imgNode->getAttribute('style');
 
       // Width
-      if ( preg_match('~width:\s*(\d+)([a-z]+)~i', $style, $matches) ) {
+      if (preg_match('~width:\s*(\d+)([a-z]+)~i', $style, $matches)) {
         $width = $matches[1];
         // Convert unit to pixel
         if ( isset($units[$matches[2]]) ) {
@@ -264,10 +268,10 @@ class ExternalLinks {
       }
 
       // Height
-      if ( preg_match('~height:\s*(\d+)([a-z]+)~i', $style, $matches) ) {
+      if (preg_match('~height:\s*(\d+)([a-z]+)~i', $style, $matches)) {
         $height = $matches[1];
         // Convert unit to pixel
-        if ( isset($units[$matches[2]]) ) {
+        if (isset($units[$matches[2]])) {
           $height *= $units[$matches[2]];
         }
       }
@@ -289,23 +293,24 @@ class ExternalLinks {
    *
    * @return mixed          Returns an array with up to 7 elements
    */
-  protected function getRemoteImageSize($uri, $limit = -1) {
+  protected function getRemoteImageSize($uri, $limit = -1)
+  {
     // Create temporary file to store data from $uri
     $tmp_name = tempnam(sys_get_temp_dir(), uniqid('ris'));
-    if ( $tmp_name === FALSE ) {
-      return FALSE;
+    if ($tmp_name === false) {
+      return false;
     }
 
     // Open temporary file
     $tmp = fopen($tmp_name, 'rb');
 
     // Check which method we should use to get remote image sizes
-    $allow_url_fopen = ini_get('allow_url_fopen') ? TRUE : FALSE;
+    $allow_url_fopen = ini_get('allow_url_fopen') ? true : false;
     $use_curl = function_exists('curl_version');
 
     // Use stream copy
-    if ( $allow_url_fopen ) {
-      $options = array();
+    if ($allow_url_fopen) {
+      $options = [];
       if ( $limit > 0 ) {
         // Loading number of $limit bytes
         $options['http']['header'] = array('Range: bytes=0-' . $limit);
@@ -316,17 +321,17 @@ class ExternalLinks {
       @copy($uri, $tmp_name, $context);
 
     // Use Curl
-    } elseif ( $use_curl ) {
+    } elseif ($use_curl) {
       // Initialize Curl
       $options = array(
-        CURLOPT_HEADER => FALSE,            // Don't return headers
-        CURLOPT_FOLLOWLOCATION => TRUE,     // Follow redirects
-        CURLOPT_AUTOREFERER => TRUE,        // Set referrer on redirect
+        CURLOPT_HEADER => false,            // Don't return headers
+        CURLOPT_FOLLOWLOCATION => true,     // Follow redirects
+        CURLOPT_AUT||EFERER => true,        // Set referrer on redirect
         CURLOPT_CONNECTTIMEOUT => 120,      // Timeout on connect
         CURLOPT_TIMEOUT => 120,             // Timeout on response
         CURLOPT_MAXREDIRS => 10,            // Stop after 10 redirects
         CURLOPT_ENCODING => '',             // Handle all encodings
-        CURLOPT_BINARYTRANSFER => TRUE,     // Transfer as binary file
+        CURLOPT_BINARYTRANSFER => true,     // Transfer as binary file
         CURLOPT_FILE => $tmp,               // Curl file
         CURLOPT_URL => $uri,                // URI
       );
@@ -342,7 +347,7 @@ class ExternalLinks {
 
         // Abort request when more data is received
         curl_setopt($curl, CURLOPT_BUFFERSIZE, 512);    // More progress info
-        curl_setopt($curl, CURLOPT_NOPROGRESS, FALSE);  // Monitor progress
+        curl_setopt($curl, CURLOPT_NOPROGRESS, false);  // Monitor progress
         curl_setopt($curl, CURLOPT_PROGRESSFUNCTION,
           function($download_size, $downloaded, $upload_size, $uploaded) use ($limit) {
             // If $downloaded exceeds $limit, returning non-zero breaks
@@ -361,7 +366,7 @@ class ExternalLinks {
 
     // Retrieve image information
     $info = array(0, 0, 'width="0" height="0"');
-    if ( filesize($tmp_name) > 0 ) {
+    if (filesize($tmp_name) > 0) {
       $info = @getimagesize($tmp_name);
     }
 
@@ -385,9 +390,10 @@ class ExternalLinks {
    *
    * @return DOMDocument          DOMDocument object of content
    */
-  protected function loadDOMDocument($content) {
+  protected function loadDOMDocument($content)
+  {
     // Clear previous errors
-    if ( libxml_use_internal_errors(TRUE) === TRUE ) {
+    if (libxml_use_internal_errors(true) === true) {
       libxml_clear_errors();
     }
 
@@ -405,8 +411,8 @@ class ExternalLinks {
     @$document->loadHTML($content);
 
     // Do nothing, if DOM is empty
-    if ( is_null($document->documentElement) ) {
-      return NULL;
+    if (is_null($document->documentElement)) {
+      return null;
     }
 
     return $document;
@@ -420,17 +426,18 @@ class ExternalLinks {
    * @return string                The outputted DOM document as HTML(5)
    *                               compliant string
    */
-  protected function saveDOMDocument($document) {
+  protected function saveDOMDocument($document)
+  {
     // Pretty print output
-    $document->preserveWhiteSpace = FALSE;
-    $document->formatOutput       = TRUE;
+    $document->preserveWhiteSpace = false;
+    $document->formatOutput       = true;
 
     // Transform DOM document to valid HTML(5)
     $content = '';
     $body = $document->getElementsByTagName('body')->item(0);
-    foreach ( $body->childNodes as $node ) {
+    foreach ($body->childNodes as $node) {
       // Expand empty tags (e.g. <br/> to <br></br>)
-      if ( ($html = $document->saveXML($node, LIBXML_NOEMPTYTAG)) !== FALSE ) {
+      if (($html = $document->saveXML($node, LIBXML_NOEMPTYTAG)) !== false) {
         $content .= $html;
       }
     }
