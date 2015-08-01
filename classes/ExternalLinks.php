@@ -402,8 +402,14 @@ class ExternalLinks
 
     // Encode contents as UTF-8, strip whitespaces & normalize newlines
     $content = mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8');
-    $content = preg_replace(array('~\R~u', '~>[[:space:]]++<~m'),
-      array("\n", '><'), $content);
+
+    // $whitespaces = array(
+    //   '~\R~u' => "\n",         // Normalize new line
+    //   '~\>[^\S ]+~s' => '>',   // Strip whitespaces after tags, except space
+    //   '~[^\S ]+\<~s' => '<',   // Strip whitespaces before tags, except space
+    //   '~(\s)+~s' => '\\1'      // Shorten multiple whitespace sequences
+    // );
+    // $content = preg_replace(array_keys($whitespaces), $whitespaces, $content);
 
     // Parse the HTML using UTF-8
     // The @ before the method call suppresses any warnings that
