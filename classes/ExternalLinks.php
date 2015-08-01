@@ -401,7 +401,7 @@ class ExternalLinks
     $document = new \DOMDocument('1.0', 'UTF-8');
 
     // Encode contents as UTF-8, strip whitespaces & normalize newlines
-    // $content = mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8');
+    $content = mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8');
     $content = preg_replace(array('~\R~u', '~>[[:space:]]++<~m'),
       array("\n", '><'), $content);
 
