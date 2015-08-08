@@ -2,15 +2,14 @@
 /**
  * External Links
  *
- * Helper class to add small icons to external and mailto links, informing
- * users the link will take them to a new site or open their email client.
+ * This file is part of Grav External Links plugin.
  *
- * Licensed under MIT, see LICENSE.
+ * Dual licensed under the MIT or GPL Version 3 licenses, see LICENSE.
+ * http://benjamin-regler.de/license/
  */
 
 namespace Grav\Plugin;
 
-use Grav\Common\Grav;
 use Grav\Common\Utils;
 use Grav\Common\GravTrait;
 
@@ -118,11 +117,12 @@ class ExternalLinks
             $classes[] = 'no-image';
           }
 
-          // Add title (aka alert text) e.g.
-          //    This link will take you to an external web site.
-          //    We are not responsible for their content.
-          // $title = $this->config->get('plugins.external_links.title');
-          // $a->setAttribute('data-title', $title);
+          // Add title (aka alert text)
+          if ($options->get('title')) {
+            $language = self::getGrav()['language'];
+            $message = $language->translate(['PLUGINS.EXTERNAL_LINKS.TITLE_MESSAGE']);
+            $a->setAttribute('data-title', $message);
+          }
         }
 
         // Set class attribute
@@ -179,13 +179,13 @@ class ExternalLinks
     }
 
     $external = false;
-    if ( !preg_match($pattern, $url) ) {
+    if (!preg_match($pattern, $url)) {
       // Check if URL is external by extracting colon position
       $colonpos = strpos($url, ':');
       if ($colonpos > 0) {
         // We found a colon, possibly a protocol. Verify.
         $protocol = strtolower(substr($url, 0, $colonpos));
-        if ( isset($allowed_protocols[$protocol]) ) {
+        if (isset($allowed_protocols[$protocol])) {
           // The protocol turns out be an allowed protocol
           $external = true;
         }
@@ -401,9 +401,15 @@ class ExternalLinks
     $document = new \DOMDocument('1.0', 'UTF-8');
 
     // Encode contents as UTF-8, strip whitespaces & normalize newlines
-    // $content = mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8');
-    $content = preg_replace(array('~\R~u', '~>[[:space:]]++<~m'),
-      array("\n", '><'), $content);
+    $content = mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8');
+
+    // $whitespaces = array(
+    //   '~\R~u' => "\n",         // Normalize new line
+    //   '~\>[^\S ]+~s' => '>',   // Strip whitespaces after tags, except space
+    //   '~[^\S ]+\<~s' => '<',   // Strip whitespaces before tags, except space
+    //   '~(\s)+~s' => '\\1'      // Shorten multiple whitespace sequences
+    // );
+    // $content = preg_replace(array_keys($whitespaces), $whitespaces, $content);
 
     // Parse the HTML using UTF-8
     // The @ before the method call suppresses any warnings that

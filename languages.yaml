@@ -1,0 +1,11 @@
+# German
+de:
+  PLUGINS:
+    EXTERNAL_LINKS:
+      TITLE_MESSAGE: "Dieser Link führt auf eine externe Webseite für deren Inhalt wir nicht verantwortlich sind."
+
+# English
+en:
+  PLUGINS:
+    EXTERNAL_LINKS:
+      TITLE_MESSAGE: "This link will take you to an external web site. We are not responsible for their content."

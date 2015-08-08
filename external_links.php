@@ -1,18 +1,20 @@
 <?php
 /**
- * External Links v1.2.2
+ * External Links v1.3.0
  *
  * This plugin adds small icons to external and mailto links, informing
  * users the link will take them to a new site or open their email client.
  *
- * Licensed under MIT, see LICENSE.
+ * Dual licensed under the MIT or GPL Version 3 licenses, see LICENSE.
+ * http://benjamin-regler.de/license/
  *
  * @package     External Links
- * @version     1.2.2
+ * @version     1.3.0
  * @link        <https://github.com/sommerregen/grav-plugin-external-links>
  * @author      Benjamin Regler <sommerregen@benjamin-regler.de>
  * @copyright   2015, Benjamin Regler
- * @license     <http://opensource.org/licenses/MIT>            MIT
+ * @license     <http://opensource.org/licenses/MIT>        MIT
+ * @license     <http://opensource.org/licenses/GPL-3.0>    GPLv3
  */
 
 namespace Grav\Plugin;
@@ -37,9 +39,9 @@ class ExternalLinksPlugin extends Plugin
   /**
    * Instance of ExternalLinks class
    *
-   * @var object
+   * @var \Grav\Plugin\ExternalLinks
    */
-  protected $external_links;
+  protected $backend;
 
   /** -------------
    * Public methods
@@ -55,14 +57,15 @@ class ExternalLinksPlugin extends Plugin
   public static function getSubscribedEvents()
   {
     return [
-      'onPluginsInitialized' => ['onPluginsInitialized', 0],
+      'onTwigInitialized' => ['onTwigInitialized', 0],
+      'onBuildPagesInitialized' => ['onBuildPagesInitialized', 0]
     ];
   }
 
   /**
-   * Initialize configuration.
+   * Initialize configuration when building pages.
    */
-  public function onPluginsInitialized()
+  public function onBuildPagesInitialized()
   {
     if ($this->isAdmin()) {
       $this->active = false;
@@ -70,16 +73,13 @@ class ExternalLinksPlugin extends Plugin
     }
 
     if ($this->config->get('plugins.external_links.enabled')) {
-      // Initialize ExternalLinks class
-      require_once(__DIR__ . '/classes/ExternalLinks.php');
-      $this->external_links = new ExternalLinks();
+      $this->init();
 
       // Process contents order according to weight option
       $weight = $this->config->get('plugins.external_links.weight');
 
       $this->enable([
-        'onPageContentProcessed' => ['onPageContentProcessed', $weight],
-        'onTwigSiteVariables' => ['onTwigSiteVariables', 0],
+        'onPageContentProcessed' => ['onPageContentProcessed', $weight]
       ]);
     }
   }
@@ -114,9 +114,20 @@ class ExternalLinksPlugin extends Plugin
 
       // Apply external links filter and save modified page content
       $page->setRawContent(
-        $this->external_links->process($content, $config)
+        $this->backend->process($content, $config)
       );
     }
+  }
+
+  /**
+   * Initialize Twig configuration and filters.
+   */
+  public function onTwigInitialized()
+  {
+    // Expose function
+    $this->grav['twig']->twig()->addFunction(
+      new \Twig_SimpleFunction('external_links', [$this, 'externalLinksFunction'], ['is_safe' => ['html']])
+    );
   }
 
   /**
@@ -124,9 +135,23 @@ class ExternalLinksPlugin extends Plugin
    */
   public function onTwigSiteVariables()
   {
-    if ( $this->config->get('plugins.external_links.built_in_css') ) {
+    if ($this->config->get('plugins.external_links.built_in_css')) {
       $this->grav['assets']->add('plugin://external_links/assets/css/external_links.css');
     }
+  }
+
+  /**
+   * Filter to parse external links.
+   *
+   * @param  string $content The content to be filtered.
+   * @param  array  $options Array of options for the External links filter.
+   *
+   * @return string          The filtered content.
+   */
+  public function externalLinksFunction($content, $params = [])
+  {
+    $config = $this->mergeConfig($this->grav['page'], $params);
+    return $this->init()->process($content, $config);
   }
 
   /** -------------------------------
@@ -153,5 +178,25 @@ class ExternalLinksPlugin extends Plugin
     }
 
     return false;
+  }
+
+  /**
+   * Initialize plugin and all dependencies.
+   *
+   * @return \Grav\Plugin\ExternalLinks   Returns ExternalLinks instance.
+   */
+  protected function init()
+  {
+    if (!$this->backend) {
+      // Initialize back-end
+      require_once(__DIR__ . '/classes/ExternalLinks.php');
+      $this->backend = new ExternalLinks();
+
+      $this->enable([
+        'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
+      ]);
+    }
+
+    return $this->backend;
   }
 }
