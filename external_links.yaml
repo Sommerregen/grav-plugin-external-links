@@ -4,7 +4,7 @@ enabled: true                 # Set to false to disable this plugin completely
 built_in_css: true            # Use built-in CSS of the plugin
 weight: 0                     # Set the weight (order of execution)
 
-# Default options for External Links configuration.
+# Default options for External Links configuration
 
 exclude:
   classes: [exclude]          # Exclude all links with this class
@@ -15,6 +15,8 @@ exclude:
 # Global and page specific configurations
 
 process: true                 # Filter external links
+
+title: true                   # Sets default title for external links
 no_follow: true               # Add rel="nofollow" to all external links
 target: "_blank"              # Set target attribute of link
 
