@@ -1,6 +1,6 @@
 <?php
 /**
- * External Links v1.3.0
+ * External Links v1.3.1
  *
  * This plugin adds small icons to external and mailto links, informing
  * users the link will take them to a new site or open their email client.
@@ -9,7 +9,7 @@
  * http://benjamin-regler.de/license/
  *
  * @package     External Links
- * @version     1.3.0
+ * @version     1.3.1
  * @link        <https://github.com/sommerregen/grav-plugin-external-links>
  * @author      Benjamin Regler <sommerregen@benjamin-regler.de>
  * @copyright   2015, Benjamin Regler
@@ -58,6 +58,7 @@ class ExternalLinksPlugin extends Plugin
   {
     return [
       'onTwigInitialized' => ['onTwigInitialized', 0],
+      'onTwigSiteVariables' => ['onTwigSiteVariables', 0],
       'onBuildPagesInitialized' => ['onBuildPagesInitialized', 0]
     ];
   }
@@ -191,10 +192,6 @@ class ExternalLinksPlugin extends Plugin
       // Initialize back-end
       require_once(__DIR__ . '/classes/ExternalLinks.php');
       $this->backend = new ExternalLinks();
-
-      $this->enable([
-        'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
-      ]);
     }
 
     return $this->backend;
