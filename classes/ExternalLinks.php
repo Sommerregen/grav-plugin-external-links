@@ -24,7 +24,7 @@ class ExternalLinks
   /**
    * @var ExternalLinks
    */
-	use GravTrait;
+  use GravTrait;
 
   /** -------------
    * Public methods
@@ -39,7 +39,7 @@ class ExternalLinks
    *
    * @return string          The processed content
    */
-	public function process($content, $options = [])
+  public function process($content, $options = [])
   {
     // Get all <a> tags and process them
     $content = preg_replace_callback('~<a[^>]*>.*?</a>~i',

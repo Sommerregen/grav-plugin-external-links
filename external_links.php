@@ -58,6 +58,7 @@ class ExternalLinksPlugin extends Plugin
   {
     return [
       'onTwigInitialized' => ['onTwigInitialized', 0],
+      'onTwigSiteVariables' => ['onTwigSiteVariables', 0],
       'onBuildPagesInitialized' => ['onBuildPagesInitialized', 0]
     ];
   }
@@ -191,10 +192,6 @@ class ExternalLinksPlugin extends Plugin
       // Initialize back-end
       require_once(__DIR__ . '/classes/ExternalLinks.php');
       $this->backend = new ExternalLinks();
-
-      $this->enable([
-        'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
-      ]);
     }
 
     return $this->backend;
