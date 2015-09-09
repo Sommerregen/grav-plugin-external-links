@@ -1,3 +1,12 @@
+# v1.3.1
+## 09/09/2015
+
+2. [](#improved)
+  * Added blueprints for Grav Admin plugin
+3. [](#bugfix)
+  * Fixed [#5](https://github.com/Sommerregen/grav-plugin-external-links/issues/5) (Works on first page displayed)
+  * Fixed [#6](https://github.com/Sommerregen/grav-plugin-external-links/issues/6) (Validation failed: title is not defined in blueprints)
+
 # v1.3.0
 ## 08/08/2015
 
