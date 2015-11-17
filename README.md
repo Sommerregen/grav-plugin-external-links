@@ -10,12 +10,14 @@
 * [Installation and Updates](#installation-and-updates)
 * [Usage](#usage)
     * [Example](#example)
+    * [CSS Stylesheet Override](#css-stylesheet-override)
+    * [Twig Filter](#twig-filter)
 * [Contributing](#contributing)
-* [Licencse](#license)
+* [License](#license)
 
 ## About
 
-`External Links` is a plugin for [GetGrav.org](http://getgrav.org) used to differentiate between internal and external links. It also includes the ability of adding "rel=nofollow" to links and determines how external links shall be opened via the "target" attribute. [Wikipedia](https://www.wikipedia.org/) is a well-known example.
+`External Links` is a high-quality plugin for [GetGrav.org](http://getgrav.org) used to differentiate between internal and external links. It also includes the ability of adding `rel="nofollow"` to links and determines how external links shall be opened via the `target` attribute. [Wikipedia](https://www.wikipedia.org/) is a well-known example.
 
 Furthermore it enables you to specify multiple domains, each of them on a new line to prevent them from being seen as external sites.
 
@@ -44,7 +46,7 @@ enabled: true                 # Set to false to disable this plugin completely
 built_in_css: true            # Use built-in CSS of the plugin
 weight: 0                     # Set the weight (order of execution)
 
-# Default options for External Links configuration.
+# Default options for External Links configuration
 
 exclude:
   classes: [exclude]          # Exclude all links with this class
@@ -52,11 +54,29 @@ exclude:
   # - localhost/*             # (any RegExp can be used)
   # - img.domain.com/*
 
+links:
+  www: true                   # Autom. link any hostname that starts with "www."
+
+  schemes:                    # Allowed schemes
+    - 'http'
+    - 'https'
+    - 'ftp'
+    - 'irc'
+    - 'mailto'
+    - 'news'
+    - 'nntp'
+    - 'rtsp'
+    - 'sftp'
+    - 'ssh'
+    - 'tel'
+    - 'telnet'
+    - 'webcal'
+
 # Global and page specific configurations
 
 process: true                 # Filter external links
 
-title: true                   # Sets default title for external links
+title: false                  # Sets default title for external links
 no_follow: true               # Add rel="nofollow" to all external links
 target: "_blank"              # Set target attribute of link
 
@@ -124,6 +144,22 @@ You can now edit, override and tweak it however you prefer. However, this plugin
 - `icon`-- Set if a link contains an image (with size <= 32px).
 - `image` -- Set if a link contains an image (with size > 32px).
 - `images` -- Set if a link contains more than one image.
+
+### Twig Filter
+
+`External Links` provides a Twig filter to process external links inside contents. To do that, place the following line of code in the theme file you wish to add the `External Links` plugin for:
+
+```
+{{ page.content|external_links }}
+```
+
+You can pass arguments to the plugin filter, namely the same arguments as available in the [external_links.yaml](external_links.yaml) file. For example
+
+```
+{{ page.content|external_links({'mode': 'passive'}) }}
+```
+
+will change the mode of the `External Links` filter to parse links, but don't set CSS classes.
 
 ## Contributing
 

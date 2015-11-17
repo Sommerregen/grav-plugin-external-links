@@ -1,5 +1,5 @@
 name: External Links
-version: 1.3.1
+version: 1.4.0
 description: "This plugin adds small icons to external and mailto links, informing users the link will take them to a new site or open their email client."
 icon: external-link
 author:
@@ -58,22 +58,53 @@ form:
       underline: 1
 
       fields:
-        exclude.classes:
-          type: selectize
-          size: large
-          label: PLUGINS.EXTERNAL_LINKS.EXCLUDE_CLASSES
-          help: PLUGINS.EXTERNAL_LINKS.EXCLUDE_CLASSES_HELP
-          validate:
-            type: commalist
+        links:
+          type: section
+          title: PLUGINS.EXTERNAL_LINKS.LINKS.SECTION
+          text: PLUGINS.EXTERNAL_LINKS.LINKS.SECTION_HELP
 
-        exclude.domains:
-          type: selectize
-          size: large
-          label: PLUGINS.EXTERNAL_LINKS.EXCLUDE_DOMAINS
-          help: PLUGINS.EXTERNAL_LINKS.EXCLUDE_DOMAINS_HELP
-          placeholder: "localhost/*, img.domain.com/*"
-          validate:
-            type: commalist
+          fields:
+            links.www:
+              type: toggle
+              label: PLUGINS.EXTERNAL_LINKS.LINKS.WWW
+              help: PLUGINS.EXTERNAL_LINKS.LINKS.WWW_HELP
+              default: 0
+              options:
+                1: PLUGIN_ADMIN.YES
+                0: PLUGIN_ADMIN.NO
+              validate:
+                type: bool
+
+            links.schemes:
+              type: selectize
+              size: large
+              label: PLUGINS.EXTERNAL_LINKS.LINKS.SCHEMES
+              help: PLUGINS.EXTERNAL_LINKS.LINKS.SCHEMES_HELP
+              validate:
+                type: commalist
+
+        exclude:
+          type: section
+          title: PLUGINS.EXTERNAL_LINKS.EXCLUDE.SECTION
+          text: PLUGINS.EXTERNAL_LINKS.EXCLUDE.SECTION_HELP
+
+          fields:
+            exclude.classes:
+              type: selectize
+              size: large
+              label: PLUGINS.EXTERNAL_LINKS.EXCLUDE.CLASSES
+              help: PLUGINS.EXTERNAL_LINKS.EXCLUDE.CLASSES_HELP
+              validate:
+                type: commalist
+
+            exclude.domains:
+              type: selectize
+              size: large
+              label: PLUGINS.EXTERNAL_LINKS.EXCLUDE.DOMAINS
+              help: PLUGINS.EXTERNAL_LINKS.EXCLUDE.DOMAINS_HELP
+              placeholder: "localhost/*, img.domain.com/*"
+              validate:
+                type: commalist
 
     specific:
       type: section
@@ -84,6 +115,7 @@ form:
         process:
           type: toggle
           label: PLUGINS.EXTERNAL_LINKS.PROCESS
+          highlight: 1
           default: 1
           options:
             1: PLUGIN_ADMIN.YES

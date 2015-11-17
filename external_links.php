@@ -1,6 +1,6 @@
 <?php
 /**
- * External Links v1.3.1
+ * External Links v1.4.0
  *
  * This plugin adds small icons to external and mailto links, informing
  * users the link will take them to a new site or open their email client.
@@ -9,7 +9,7 @@
  * http://benjamin-regler.de/license/
  *
  * @package     External Links
- * @version     1.3.1
+ * @version     1.4.0
  * @link        <https://github.com/sommerregen/grav-plugin-external-links>
  * @author      Benjamin Regler <sommerregen@benjamin-regler.de>
  * @copyright   2015, Benjamin Regler
@@ -19,9 +19,10 @@
 
 namespace Grav\Plugin;
 
-use Grav\Common\Grav;
 use Grav\Common\Plugin;
 use Grav\Common\Page\Page;
+use Grav\Common\Data\Blueprints;
+
 use RocketTheme\Toolbox\Event\Event;
 
 /**
@@ -41,7 +42,7 @@ class ExternalLinksPlugin extends Plugin
    *
    * @var \Grav\Plugin\ExternalLinks
    */
-  protected $backend;
+  protected $external_links;
 
   /** -------------
    * Public methods
@@ -57,10 +58,34 @@ class ExternalLinksPlugin extends Plugin
   public static function getSubscribedEvents()
   {
     return [
-      'onTwigInitialized' => ['onTwigInitialized', 0],
-      'onTwigSiteVariables' => ['onTwigSiteVariables', 0],
-      'onBuildPagesInitialized' => ['onBuildPagesInitialized', 0]
+      'onPluginsInitialized' => ['onPluginsInitialized', 0]
     ];
+  }
+
+  /**
+   * Initialize configuration
+   */
+  public function onPluginsInitialized()
+  {
+    if ($this->config->get('plugins.external_links.enabled')) {
+      // Set default events
+      $events = [
+        'onTwigInitialized' => ['onTwigInitialized', 0],
+        'onTwigSiteVariables' => ['onTwigSiteVariables', 0],
+        'onBuildPagesInitialized' => ['onBuildPagesInitialized', 0]
+      ];
+
+      // Set admin specific events
+      if ($this->isAdmin()) {
+        $this->active = false;
+        $events = [
+          'onBlueprintCreated' => ['onBlueprintCreated', 0]
+        ];
+      }
+
+      // Register events
+      $this->enable($events);
+    }
   }
 
   /**
@@ -68,20 +93,31 @@ class ExternalLinksPlugin extends Plugin
    */
   public function onBuildPagesInitialized()
   {
-    if ($this->isAdmin()) {
-      $this->active = false;
+    if (!$this->active) {
       return;
     }
 
-    if ($this->config->get('plugins.external_links.enabled')) {
-      $this->init();
+    // Process contents order according to weight option
+    $weight = $this->config->get('plugins.external_links.weight', 0);
 
-      // Process contents order according to weight option
-      $weight = $this->config->get('plugins.external_links.weight');
+    $this->enable([
+      'onPageContentProcessed' => ['onPageContentProcessed', $weight]
+    ]);
+  }
 
-      $this->enable([
-        'onPageContentProcessed' => ['onPageContentProcessed', $weight]
-      ]);
+  /**
+   * Extend page blueprints with textformatter configuration options.
+   *
+   * @param Event $event
+   */
+  public function onBlueprintCreated(Event $event)
+  {
+    /** @var Blueprints $blueprint */
+    $blueprint = $event['blueprint'];
+    if ($blueprint->get('form.fields.tabs')) {
+      $blueprints = new Blueprints(__DIR__ . '/blueprints/');
+      $extends = $blueprints->get($this->name);
+      $blueprint->extend($extends, true);
     }
   }
 
@@ -98,15 +134,13 @@ class ExternalLinksPlugin extends Plugin
     $page = $event['page'];
 
     $config = $this->mergeConfig($page);
-    if ($config->get('process', false) && $this->compileOnce($page)) {
-      // Do nothing, if a route for a given page does not exist
-      if (!$page->route()) {
-        return;
-      }
+    $enabled = ($config->get('process') && $config->get('enabled')) ? true : false;
 
-      // Check if mode option is valid
-      $mode = $config->get('mode', 'passive');
-      if (!in_array($mode, array('active', 'passive'))) {
+    if ($enabled && $this->compileOnce($page)) {
+      // Do nothing, if a route for a given page does not exist and check if
+      // mode option is valid
+      $mode = strtolower($config->get('mode', 'passive'));
+      if (!$page->route() || !in_array($mode, array('active', 'passive'))) {
         return;
       }
 
@@ -115,7 +149,7 @@ class ExternalLinksPlugin extends Plugin
 
       // Apply external links filter and save modified page content
       $page->setRawContent(
-        $this->backend->process($content, $config)
+        $this->externalLinksFilter($content, $config->toArray(), $page)
       );
     }
   }
@@ -126,8 +160,8 @@ class ExternalLinksPlugin extends Plugin
   public function onTwigInitialized()
   {
     // Expose function
-    $this->grav['twig']->twig()->addFunction(
-      new \Twig_SimpleFunction('external_links', [$this, 'externalLinksFunction'], ['is_safe' => ['html']])
+    $this->grav['twig']->twig()->addFilter(
+      new \Twig_SimpleFilter('external_links', [$this, 'externalLinksFilter'], ['is_safe' => ['html']])
     );
   }
 
@@ -149,10 +183,16 @@ class ExternalLinksPlugin extends Plugin
    *
    * @return string          The filtered content.
    */
-  public function externalLinksFunction($content, $params = [])
+  public function externalLinksFilter($content, $params = [])
   {
-    $config = $this->mergeConfig($this->grav['page'], $params);
-    return $this->init()->process($content, $config);
+    // Get custom user configuration
+    $page = func_num_args() > 2 ? func_get_arg(2) : $this->grav['page'];
+    $config = $this->mergeConfig($page, true, $params);
+
+    $this->grav['debugger']->addMessage($params);
+
+    // Render
+    return $this->init()->render($content, $config, $page);
   }
 
   /** -------------------------------
@@ -188,12 +228,12 @@ class ExternalLinksPlugin extends Plugin
    */
   protected function init()
   {
-    if (!$this->backend) {
-      // Initialize back-end
+    if (!$this->external_links) {
+      // Initialize ExternalLinks instance
       require_once(__DIR__ . '/classes/ExternalLinks.php');
-      $this->backend = new ExternalLinks();
+      $this->external_links = new ExternalLinks();
     }
 
-    return $this->backend;
+    return $this->external_links;
   }
 }
