@@ -1,3 +1,17 @@
+# v1.4.0
+## 11/17/2015
+
+1. [](#new)
+  * Added `External Links` options to page options tab
+2. [](#improved)
+  * Improved `isExternalUrl` function to allow custom schemes and whether to evaluate links beginning with `.www` or not
+  * Added more blueprint options
+  * Improved code
+  * Updated docs
+3. [](#bugfix)
+  * Fixed[#7](https://github.com/Sommerregen/grav-plugin-external-links/issues/7) (Possible issue with malformed URLs)
+  * Fixes `external_links` filter function
+
 # v1.3.1
 ## 09/09/2015
 
