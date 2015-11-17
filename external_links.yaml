@@ -12,11 +12,29 @@ exclude:
   # - localhost/*             # (any RegExp can be used)
   # - img.domain.com/*
 
+links:
+  www: false                  # Autom. link any hostname that starts with "www."
+
+  schemes:                    # Allowed schemes
+    - 'http'
+    - 'https'
+    - 'ftp'
+    - 'irc'
+    - 'mailto'
+    - 'news'
+    - 'nntp'
+    - 'rtsp'
+    - 'sftp'
+    - 'ssh'
+    - 'tel'
+    - 'telnet'
+    - 'webcal'
+
 # Global and page specific configurations
 
 process: true                 # Filter external links
 
-title: true                   # Sets default title for external links
+title: false                  # Sets default title for external links
 no_follow: true               # Add rel="nofollow" to all external links
 target: "_blank"              # Set target attribute of link
 
