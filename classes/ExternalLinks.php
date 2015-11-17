@@ -197,7 +197,7 @@ class ExternalLinks
     }
 
     // Only if a colon and a valid protocol was found return true
-    return ($colonpos !== false) && $external;
+    return $external;
   }
 
   /**
