@@ -1,3 +1,9 @@
+# v1.4.1
+## 11/18/2015
+
+2. [](#improved)
+  * Page specific options now respect the default configurations set in the admin panel
+
 # v1.4.0
 ## 11/17/2015
 
