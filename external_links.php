@@ -106,7 +106,7 @@ class ExternalLinksPlugin extends Plugin
   }
 
   /**
-   * Extend page blueprints with textformatter configuration options.
+   * Extend page blueprints with ExternalLinks configuration options.
    *
    * @param Event $event
    */
@@ -188,8 +188,6 @@ class ExternalLinksPlugin extends Plugin
     // Get custom user configuration
     $page = func_num_args() > 2 ? func_get_arg(2) : $this->grav['page'];
     $config = $this->mergeConfig($page, true, $params);
-
-    $this->grav['debugger']->addMessage($params);
 
     // Render
     return $this->init()->render($content, $config, $page);
