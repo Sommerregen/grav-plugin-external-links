@@ -21,7 +21,7 @@ form:
                   type: toggle
                   label: PLUGINS.EXTERNAL_LINKS.PROCESS
                   highlight: 1
-                  default: 1
+                  '@config-default': plugins.external_links.process
                   options:
                     1: PLUGIN_ADMIN.YES
                     0: PLUGIN_ADMIN.NO
@@ -31,7 +31,7 @@ form:
                 header.external_links.title:
                   type: toggle
                   label: PLUGINS.EXTERNAL_LINKS.TITLE
-                  default: 0
+                  '@config-default': plugins.external_links.title
                   options:
                     1: PLUGIN_ADMIN.YES
                     0: PLUGIN_ADMIN.NO
@@ -41,7 +41,7 @@ form:
                 header.external_links.no_follow:
                   type: toggle
                   label: PLUGINS.EXTERNAL_LINKS.NO_FOLLOW
-                  default: 1
+                  '@config-default': plugins.external_links.no_follow
                   options:
                     1: PLUGIN_ADMIN.YES
                     0: PLUGIN_ADMIN.NO
@@ -52,7 +52,7 @@ form:
                   type: select
                   size: large
                   label: PLUGINS.EXTERNAL_LINKS.TARGET
-                  default: _blank
+                  '@config-default': plugins.external_links.target
                   placeholder: _blank
                   selectize:
                     create: true
@@ -70,7 +70,7 @@ form:
                   classes: fancy
                   label: PLUGINS.EXTERNAL_LINKS.MODE
                   help: PLUGINS.EXTERNAL_LINKS.MODE_HELP
-                  default: active
+                  '@config-default': plugins.external_links.mode
                   options:
                     active: PLUGINS.EXTERNAL_LINKS.MODE_ACTIVE
                     passive: PLUGINS.EXTERNAL_LINKS.MODE_PASSIVE

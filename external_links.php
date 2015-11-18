@@ -1,6 +1,6 @@
 <?php
 /**
- * External Links v1.4.0
+ * External Links v1.4.1
  *
  * This plugin adds small icons to external and mailto links, informing
  * users the link will take them to a new site or open their email client.
@@ -9,7 +9,7 @@
  * http://benjamin-regler.de/license/
  *
  * @package     External Links
- * @version     1.4.0
+ * @version     1.4.1
  * @link        <https://github.com/sommerregen/grav-plugin-external-links>
  * @author      Benjamin Regler <sommerregen@benjamin-regler.de>
  * @copyright   2015, Benjamin Regler
@@ -106,7 +106,7 @@ class ExternalLinksPlugin extends Plugin
   }
 
   /**
-   * Extend page blueprints with textformatter configuration options.
+   * Extend page blueprints with ExternalLinks configuration options.
    *
    * @param Event $event
    */
@@ -188,8 +188,6 @@ class ExternalLinksPlugin extends Plugin
     // Get custom user configuration
     $page = func_num_args() > 2 ? func_get_arg(2) : $this->grav['page'];
     $config = $this->mergeConfig($page, true, $params);
-
-    $this->grav['debugger']->addMessage($params);
 
     // Render
     return $this->init()->render($content, $config, $page);
