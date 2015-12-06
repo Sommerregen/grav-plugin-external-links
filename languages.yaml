@@ -97,3 +97,54 @@ en:
       MODE_HELP: "active = process and parse all links; passive = parse links, but don't set CSS classes"
       MODE_ACTIVE: "Active - Process and parse all links"
       MODE_PASSIVE: "Passive - Parse links, but don't set CSS classes"
+      
+# French
+fr:
+  PLUGINS:
+    EXTERNAL_LINKS:
+      GLOBAL_CONFIG: "Configuration globale du plugin"
+      DEFAULT_CONFIG: "Configuration des valeurs par défaut pour les liens externes"
+      SPECIFIC_CONFIG: "Configuration globale et de pages spécifiques"
+      PLUGIN_STATUS: "Statut du plugin"
+      BUILTIN_CSS: "Utiliser les CSS intégrés"
+
+      WEIGHT: "Ordre d'exécution"
+      EXTERNAL_LINKS: "Liens externes"
+
+      EXCLUDE:
+        SECTION: "Exclusion"
+        SECTION_HELP: "Exclure les liens avec des classes spécifiques ou des domaines comme étant reconnus comme liens externes."
+
+        CLASSES: "Exclure tous les liens avec cette classe"
+        CLASSES_HELP: "Liste des classes séparées par des virgules."
+
+        DOMAINS: "Une liste des domaines à exclure"
+        DOMAINS_HELP: "Liste des domaines séparés par des virgules ex : _localhost/*_  (les expressions régulières peuvent être utilisées)"
+
+      LINKS:
+        SECTION: "Liens"
+        SECTION_HELP: "Définir les liens commençant par <code>www.</code> et ceux de la liste des schémas définis comme étant des liens externes."
+
+        WWW: "Liens WWW"
+        WWW_HELP: "Reconnaître automatiquement tout lien commencant par 'www.' comme étant un lien externe."
+
+        SCHEMES: "Schémas autorisés"
+        SCHEMES_HELP: "Liste des schémas autorisés"
+
+      PROCESS: "Filtrer les liens externes de la page"
+
+      TITLE: "Afficher le titre par défaut pour les liens externes"
+      TITLE_MESSAGE: "Ce lien va vous diriger vers un site externe. Nous ne sommes pas responsables de son contenu."
+      NO_FOLLOW: 'Ajouter <code>rel="nofollow"</code> à tous les liens externes'
+
+      TARGET: "Spécifier la cible dans laquelle le contenu du lien doit s'afficher."
+      TARGET_BLANK: "_blank | Afficher dans une nouvelle fenêtre"
+      TARGET_SELF: "_self | Afficher dans la même fenêtre"
+      TARGET_PARENT: "_parent | Afficher dans le cadre parent (frame)"
+      TARGET_TOP: "_top | Afficher dans le cadre racine"
+
+      MODE: "Mode"
+      MODE_HELP: "actif = analyser et procéder pour tous les liens; passif = analyser les liens mais ne pas appliquer les classes CSS"
+      MODE_ACTIVE: "Actif - Analyser et procéder pour tous les liens"
+      MODE_PASSIVE: "Passif - Analyser les liens mais ne pas appliquer les classes CSS"
+      

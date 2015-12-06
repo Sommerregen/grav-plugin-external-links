@@ -1,3 +1,9 @@
+# v1.4.2
+## 12/06/2015
+
+1. [](#new)
+  * Added French translations [#8](https://github.com/Sommerregen/grav-plugin-external-links/pull/8/files) (Thanks to @MATsxm)
+
 # v1.4.1
 ## 11/18/2015
 
@@ -15,7 +21,7 @@
   * Improved code
   * Updated docs
 3. [](#bugfix)
-  * Fixed[#7](https://github.com/Sommerregen/grav-plugin-external-links/issues/7) (Possible issue with malformed URLs)
+  * Fixed [#7](https://github.com/Sommerregen/grav-plugin-external-links/issues/7) (Possible issue with malformed URLs)
   * Fixes `external_links` filter function
 
 # v1.3.1
