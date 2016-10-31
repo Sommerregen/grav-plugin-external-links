@@ -68,11 +68,15 @@ class ExternalLinksPlugin extends Plugin
   public function onPluginsInitialized()
   {
     if ($this->config->get('plugins.external_links.enabled')) {
+
+      // Process contents order according to weight option
+      $weight = $this->config->get('plugins.external_links.weight', 0);
+
       // Set default events
       $events = [
         'onTwigInitialized' => ['onTwigInitialized', 0],
         'onTwigSiteVariables' => ['onTwigSiteVariables', 0],
-        'onBuildPagesInitialized' => ['onBuildPagesInitialized', 0]
+        'onPageContentProcessed' => ['onPageContentProcessed', $weight]
       ];
 
       // Set admin specific events
@@ -86,23 +90,6 @@ class ExternalLinksPlugin extends Plugin
       // Register events
       $this->enable($events);
     }
-  }
-
-  /**
-   * Initialize configuration when building pages.
-   */
-  public function onBuildPagesInitialized()
-  {
-    if (!$this->active) {
-      return;
-    }
-
-    // Process contents order according to weight option
-    $weight = $this->config->get('plugins.external_links.weight', 0);
-
-    $this->enable([
-      'onPageContentProcessed' => ['onPageContentProcessed', $weight]
-    ]);
   }
 
   /**
