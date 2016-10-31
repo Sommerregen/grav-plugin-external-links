@@ -101,7 +101,7 @@ class ExternalLinksPlugin extends Plugin
   {
     /** @var Blueprints $blueprint */
     $blueprint = $event['blueprint'];
-    if ($blueprint->get('form.fields.tabs')) {
+    if ($blueprint->get('for/fields/tabs', null, '/')) {
       $blueprints = new Blueprints(__DIR__ . '/blueprints/');
       $extends = $blueprints->get($this->name);
       $blueprint->extend($extends, true);
