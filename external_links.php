@@ -1,6 +1,6 @@
 <?php
 /**
- * External Links v1.4.2
+ * External Links v1.4.3
  *
  * This plugin adds small icons to external and mailto links, informing
  * users the link will take them to a new site or open their email client.
@@ -9,7 +9,7 @@
  * http://benjamin-regler.de/license/
  *
  * @package     External Links
- * @version     1.4.2
+ * @version     1.4.3
  * @link        <https://github.com/sommerregen/grav-plugin-external-links>
  * @author      Benjamin Regler <sommerregen@benjamin-regler.de>
  * @copyright   2016, Benjamin Regler
@@ -98,7 +98,7 @@ class ExternalLinksPlugin extends Plugin
     {
         /** @var Blueprints $blueprint */
         $blueprint = $event['blueprint'];
-        if ($blueprint->get('for/fields/tabs', null, '/')) {
+        if ($blueprint->get('form/fields/tabs', null, '/')) {
             $blueprints = new Blueprints(__DIR__ . '/blueprints/');
             $extends = $blueprints->get($this->name);
             $blueprint->extend($extends, true);
