@@ -1,3 +1,10 @@
+# v1.4.3
+## 10/31/2016
+
+3. [](#bugfix)
+  * Fixed [#11](https://github.com/Sommerregen/grav-plugin-external-links/issues/11) (Not working with cache enabling) (see PR [#15](https://github.com/Sommerregen/grav-plugin-external-links/pull/15))
+  * Fixed [#13](https://github.com/Sommerregen/grav-plugin-external-links/issues/13) (Preferences Not Showing)
+
 # v1.4.2
 ## 12/06/2015
 
