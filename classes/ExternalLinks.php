@@ -346,7 +346,7 @@ class ExternalLinks
             $options = array(
                 CURLOPT_HEADER => false,            // Don't return headers
                 CURLOPT_FOLLOWLOCATION => true,     // Follow redirects
-                CURLOPT_AUT||EFERER => true,        // Set referrer on redirect
+                CURLOPT_AUTOREFERER => true,        // Set referrer on redirect
                 CURLOPT_CONNECTTIMEOUT => 120,      // Timeout on connect
                 CURLOPT_TIMEOUT => 120,             // Timeout on response
                 CURLOPT_MAXREDIRS => 10,            // Stop after 10 redirects
@@ -359,7 +359,7 @@ class ExternalLinks
             $curl = curl_init();
             curl_setopt_array($curl, $options);
 
-            if ( $limit > 0 ) {
+            if ($limit > 0) {
                 // Loading number of $limit
                 $headers = array('Range: bytes=0-' . $limit);
                 curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
