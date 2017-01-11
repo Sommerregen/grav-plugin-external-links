@@ -1,3 +1,9 @@
+# v1.4.4
+## 11/01/2017
+
+3. [](#bugfix)
+  * Fixed `CURLOPT_AUTOREFERER` constant
+
 # v1.4.3
 ## 10/31/2016
 
@@ -87,7 +93,7 @@
 1. [](#new)
   * By default `External Links` now uses the class `external-links` for CSS styling; using `external` is still possible e.g. for manually markup external links
 2. [](#improved)
-  * Improved usage example in README.md
+  * Improved usage example in `README.md`
 3. [](#bugfix)
   * Fixed [#1](https://github.com/Sommerregen/grav-plugin-external-links/issues/4) (Issue with LightSlider plugin)
 
@@ -95,7 +101,7 @@
 ## 02/06/2015
 
 1. [](#new)
-  * Added usage example in README.md
+  * Added usage example in `README.md`
   * Add icons next to external links via CSS when using class `external` only
 2. [](#improved)
   * Added support for HHVM **(requires Grav 0.9.17+)**
