@@ -13,15 +13,15 @@ form:
           fields:
             external_links:
               type: section
-              title: PLUGINS.EXTERNAL_LINKS.EXTERNAL_LINKS
+              title: PLUGINS.EXTERNAL_LINKS.PLUGIN_NAME
               underline: true
 
               fields:
                 header.external_links.process:
                   type: toggle
+                  toggleable: true
                   label: PLUGINS.EXTERNAL_LINKS.PROCESS
                   highlight: 1
-                  '@config-default': plugins.external_links.process
                   options:
                     1: PLUGIN_ADMIN.YES
                     0: PLUGIN_ADMIN.NO
@@ -30,8 +30,8 @@ form:
 
                 header.external_links.title:
                   type: toggle
+                  toggleable: true
                   label: PLUGINS.EXTERNAL_LINKS.TITLE
-                  '@config-default': plugins.external_links.title
                   options:
                     1: PLUGIN_ADMIN.YES
                     0: PLUGIN_ADMIN.NO
@@ -40,8 +40,8 @@ form:
 
                 header.external_links.no_follow:
                   type: toggle
+                  toggleable: true
                   label: PLUGINS.EXTERNAL_LINKS.NO_FOLLOW
-                  '@config-default': plugins.external_links.no_follow
                   options:
                     1: PLUGIN_ADMIN.YES
                     0: PLUGIN_ADMIN.NO
@@ -51,6 +51,7 @@ form:
                 header.external_links.target:
                   type: select
                   size: large
+                  toggleable: true
                   label: PLUGINS.EXTERNAL_LINKS.TARGET
                   '@config-default': plugins.external_links.target
                   placeholder: _blank
@@ -68,6 +69,7 @@ form:
                   type: select
                   size: large
                   classes: fancy
+                  toggleable: true
                   label: PLUGINS.EXTERNAL_LINKS.MODE
                   help: PLUGINS.EXTERNAL_LINKS.MODE_HELP
                   '@config-default': plugins.external_links.mode

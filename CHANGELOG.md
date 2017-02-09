@@ -1,5 +1,12 @@
+# v1.5.0
+## 02/09/2017
+
+2. [](#improved)
+  * Use tabs in admin panel settings for better user experience
+  * Use toggle buttons for page settings
+
 # v1.4.4
-## 11/01/2017
+## 01/11/2017
 
 3. [](#bugfix)
   * Fixed `CURLOPT_AUTOREFERER` constant

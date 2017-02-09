@@ -2,14 +2,15 @@
 de:
   PLUGINS:
     EXTERNAL_LINKS:
-      GLOBAL_CONFIG: "Globale Einstellungen"
-      DEFAULT_CONFIG: "Standardeinstellungen für External Links"
-      SPECIFIC_CONFIG:  "Globale und seitenspezifische Einstellungen"
+      PLUGIN_NAME: "External Links"
       PLUGIN_STATUS: "Plugin Status"
-      BUILTIN_CSS: "Verwende mitgeliefertes CSS"
+      PLUGIN_STATUS_HELP: "Aktiviere das Plugin oder schalte es komplett ab."
 
+      BUILTIN_CSS: "Verwende mitgeliefertes CSS"
       WEIGHT: "Ausführungsreihenfolge"
-      EXTERNAL_LINKS: "External Links"
+
+      SETTINGS: "Einstellungen"
+      CONTENT: "Inhalt"
 
       EXCLUDE:
         SECTION: "Ausnahmen"
@@ -52,14 +53,15 @@ de:
 en:
   PLUGINS:
     EXTERNAL_LINKS:
-      GLOBAL_CONFIG: "Global plugin configurations"
-      DEFAULT_CONFIG: "Default values for External Links configuration"
-      SPECIFIC_CONFIG: "Global and page specific configurations"
+      PLUGIN_NAME: "External Links"
       PLUGIN_STATUS: "Plugin status"
-      BUILTIN_CSS: "Use built in CSS"
+      STATUS_HELP: "Set to false to disable this plugin completely."
 
+      BUILTIN_CSS: "Use built in CSS"
       WEIGHT: "Order of execution"
-      EXTERNAL_LINKS: "External Links"
+
+      SETTINGS: "Settings"
+      CONTENT: "Content"
 
       EXCLUDE:
         SECTION: "Exclusion"
@@ -97,19 +99,20 @@ en:
       MODE_HELP: "active = process and parse all links; passive = parse links, but don't set CSS classes"
       MODE_ACTIVE: "Active - Process and parse all links"
       MODE_PASSIVE: "Passive - Parse links, but don't set CSS classes"
-      
+
 # French
 fr:
   PLUGINS:
     EXTERNAL_LINKS:
-      GLOBAL_CONFIG: "Configuration globale du plugin"
-      DEFAULT_CONFIG: "Configuration des valeurs par défaut pour les liens externes"
-      SPECIFIC_CONFIG: "Configuration globale et de pages spécifiques"
+      PLUGIN_NAME: "Liens externes"
       PLUGIN_STATUS: "Statut du plugin"
-      BUILTIN_CSS: "Utiliser les CSS intégrés"
+      STATUS_HELP: "Set to false to disable this plugin completely."
 
+      BUILTIN_CSS: "Utiliser les CSS intégrés"
       WEIGHT: "Ordre d'exécution"
-      EXTERNAL_LINKS: "Liens externes"
+
+      SETTINGS: "Configuration"
+      CONTENT: "Contenu"
 
       EXCLUDE:
         SECTION: "Exclusion"
@@ -147,4 +150,4 @@ fr:
       MODE_HELP: "actif = analyser et procéder pour tous les liens; passif = analyser les liens mais ne pas appliquer les classes CSS"
       MODE_ACTIVE: "Actif - Analyser et procéder pour tous les liens"
       MODE_PASSIVE: "Passif - Analyser les liens mais ne pas appliquer les classes CSS"
-      
+
