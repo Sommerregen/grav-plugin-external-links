@@ -13,7 +13,7 @@ form:
           fields:
             external_links:
               type: section
-              title: PLUGINS.EXTERNAL_LINKS.EXTERNAL_LINKS
+              title: PLUGINS.EXTERNAL_LINKS.PLUGIN_NAME
               underline: true
 
               fields:
