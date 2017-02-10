@@ -1,3 +1,9 @@
+# v1.5.1
+## 02/10/2017
+
+3. [](#bugfix)
+  * Fixed error in getting the remote image size
+
 # v1.5.0
 ## 02/09/2017
 
