@@ -322,7 +322,7 @@ class ExternalLinks
         }
 
         // Open temporary file
-        $tmp = fopen($tmp_name, 'rb');
+        $tmp = fopen($tmp_name, 'wb');
 
         // Check which method we should use to get remote image sizes
         $allow_url_fopen = ini_get('allow_url_fopen') ? true : false;
