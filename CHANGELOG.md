@@ -1,3 +1,9 @@
+# v1.5.2
+## 02/17/2017
+
+1. [](#new)
+  * Added Russian translations [#16](https://github.com/Sommerregen/grav-plugin-external-links/pull/16) (Thanks to [@ktaranov](https://github.com/ktaranov))
+
 # v1.5.1
 ## 02/10/2017
 
@@ -28,7 +34,7 @@
 ## 12/06/2015
 
 1. [](#new)
-  * Added French translations [#8](https://github.com/Sommerregen/grav-plugin-external-links/pull/8/files) (Thanks to @MATsxm)
+  * Added French translations [#8](https://github.com/Sommerregen/grav-plugin-external-links/pull/8) (Thanks to [@MATsxm](https://github.com/MATsxm))
 
 # v1.4.1
 ## 11/18/2015
