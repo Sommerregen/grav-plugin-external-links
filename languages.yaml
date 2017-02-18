@@ -106,10 +106,10 @@ fr:
     EXTERNAL_LINKS:
       PLUGIN_NAME: "Liens externes"
       PLUGIN_STATUS: "Statut du plugin"
-      STATUS_HELP: "Set to false to disable this plugin completely."
+      STATUS_HELP: "Régler sur false pour désactiver complètement le plugin."
 
       BUILTIN_CSS: "Utiliser les CSS intégrés"
-      WEIGHT: "Ordre d'exécution"
+      WEIGHT: "Ordre d’éxécution"
 
       SETTINGS: "Configuration"
       CONTENT: "Contenu"
