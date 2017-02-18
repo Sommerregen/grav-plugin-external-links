@@ -1,3 +1,9 @@
+# v1.5.3
+## 02/18/2017
+
+3. [](#bugfix)
+  * Fixed Russian translation strings [#17](https://github.com/Sommerregen/grav-plugin-external-links/pull/17) (Thanks to [@geschke](https://github.com/geschke) for the fast PR)
+
 # v1.5.2
 ## 02/17/2017
 
