@@ -109,7 +109,7 @@ fr:
       STATUS_HELP: "Régler sur false pour désactiver complètement le plugin."
 
       BUILTIN_CSS: "Utiliser les CSS intégrés"
-      WEIGHT: "Ordre d’éxécution"
+      WEIGHT: "Ordre d’exécution"
 
       SETTINGS: "Configuration"
       CONTENT: "Contenu"
