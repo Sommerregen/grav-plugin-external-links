@@ -134,6 +134,15 @@ class ExternalLinks
                 $a->setAttribute('class', implode(' ', $classes));
             }
 
+            // Set rel="noopener noreferrer"
+            $rel = $a->hasAttribute('rel') ? $a->getAttribute('rel') : '';
+            $rel = array_filter(explode(' ', $rel));
+
+            $rel[] = 'noopener';
+            $rel[] = 'noreferrer';
+            $a->setAttribute('rel', implode(' ', array_unique($rel)));
+
+
             // Save Dom document back to HTML representation
             $html = $this->saveDOMDocument($dom);
             return $html;
