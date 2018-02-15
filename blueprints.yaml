@@ -81,6 +81,17 @@ form:
                   validate:
                     type: bool
 
+                links.redirects:
+                  type: toggle
+                  label: PLUGINS.EXTERNAL_LINKS.LINKS.REDIRECTS
+                  help: PLUGINS.EXTERNAL_LINKS.LINKS.REDIRECTS_HELP
+                  default: 0
+                  options:
+                    1: PLUGIN_ADMIN.YES
+                    0: PLUGIN_ADMIN.NO
+                  validate:
+                    type: bool
+
                 links.schemes:
                   type: selectize
                   size: large

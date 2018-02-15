@@ -209,18 +209,26 @@ class ExternalLinks
                     // The protocol turns out be an allowed protocol
                     $external = $url;
                 }
-            } elseif ($config->get('plugins.external_links.links.www')) {
-                // Remove possible path duplicate
-                $route = Grav::instance()['base_url'] . $page->route();
-                $href = Utils::startsWith($url, $route)
-                  ? ltrim(mb_substr($url, mb_strlen($route)), '/')
-                  : $url;
+            }  else {
+                if ($config->get('plugins.external_links.links.www')) {
+                    // Remove possible path duplicate
+                    $route = Grav::instance()['base_url'] . $page->route();
+                    $href = Utils::startsWith($url, $route)
+                        ? ltrim(mb_substr($url, mb_strlen($route)), '/')
+                        : $url;
 
-                // We found an url without protocol, but with starting 'www' (sub-)domain
-                if (Utils::startsWith($url, 'www.')) {
-                    $external = 'http://' . $url;
-                } elseif (Utils::startsWith($href, 'www.')) {
-                    $external = 'http://' . $href;
+                    // We found an url without protocol, but with starting 'www' (sub-)domain
+                    if (Utils::startsWith($url, 'www.')) {
+                        $external = 'http://' . $url;
+                    } elseif (Utils::startsWith($href, 'www.')) {
+                        $external = 'http://' . $href;
+                    }
+                }
+                if ($config->get('plugins.external_links.links.redirects')) {
+                    $targetPage = Grav::instance()['pages']->find($url);
+                    if ($targetPage && $targetPage->redirect()) {
+                        $external = $this->isExternalUrl($targetPage->redirect(), $domains, $page);
+                    }
                 }
             }
         }

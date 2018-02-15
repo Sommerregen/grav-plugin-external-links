@@ -55,7 +55,10 @@ exclude:
   # - img.domain.com/*
 
 links:
-  www: true                   # Autom. link any hostname that starts with "www."
+  www: false                  # Autom. link any hostname that starts with "www."
+
+  redirects: false            # Also mark links as external, that link to pages 
+                              # that redirect to an external URL
 
   schemes:                    # Allowed schemes
     - 'http'
