@@ -50,7 +50,10 @@ class ExternalLinks
                 }
 
                 $a = $dom->getElementsByTagName('a')->item(0);
-
+                if (is_null($a)) {
+                    return $match[0];
+                }
+                    
                 // Process links with non-empty href attribute
                 $href = $a->getAttribute('href');
                 if (strlen($href) == 0) {
