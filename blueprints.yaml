@@ -11,6 +11,9 @@ docs: 'https://github.com/sommerregen/grav-plugin-external-links/blob/master/REA
 bugs: 'https://github.com/sommerregen/grav-plugin-external-links/issues'
 license: 'MIT/GPL'
 
+dependencies:
+    - { name: grav, version: '>=1.6' }
+
 form:
   validation: strict
 
